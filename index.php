@@ -13,5 +13,5 @@ if (isset($_GET['action'])) {
     }
 }
 ?>
-<a href="view/front/login.php">login</a>
-<a href="view/front/register.php">register</a>
+<script type="text/javascript" src="public/js/redirect.js"></script>
+

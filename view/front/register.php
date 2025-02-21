@@ -9,8 +9,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
 <body>
-<section class="vh-100 gradient-custom">
-  <div class="container py-5 h-100">
+<section class="gradient-custom">
+  <div class="container py-2 h-100">
     <div class="row justify-content-center align-items-center h-100">
       <div class="col-12 col-lg-9 col-xl-7">
         <div class="card shadow-2-strong" style="border-radius: 15px;">
@@ -55,34 +55,32 @@
                 </div>
               </div>
               <div class="row">
-              <label><strong>Avatar</strong></label>
+              <label  class="pb-2"><strong>Avatar</strong></label>
                 <div class="col-md-6 mb-4 d-flex align-items-center">
-
-                  
-                
-
                 <div class="d-flex">
                   <input class="form-control" name="avatar" type="file" id="formFile"  accept="image/*">
                   <button class="btn btn-danger m-1" id="deleteBtn"><i class="fa-solid fa-trash-can-xmark"></i></button>
                 </div>
                 </div>
+              </div>
+              <div class="row">
+              <label class="form-label select-label"><strong>Vos Droits</strong></label>
                 <div class="col-md-6 mb-4">
-                <label class="form-label select-label"><strong>Vos Droits</strong></label>
                   <select name="droits" id="droits" class="select form-control form-control-lg">
                     <option value="2">Utilisateur</option>
                     <option value="1">Admin</option>
                   </select>
                 </div>
               </div>
-              <div class="row pt-3 ps-5">
+              <div class="row pt-3">
                 <div class="col-md-6 mb-4">
                 <label for="conditions">
                   <input type="checkbox" id="conditions" required>
-                  J'accepte les conditions d'utilisation.
+                  <strong>J'accepte les conditions d'utilisation.</strong>
               </label>
                 </div>
                 <div class="col-md-6 mb-4 ps-5">
-                  <p class="align-item-center">Déjà un compte ? <a href="login.php">Connectez-vous ici</a></p>
+                  <strong><p class="align-item-center">Déjà un compte ? <a href="login.php">Connectez-vous ici</a></p></strong>
                 </div>
               </div>
               <div class="d-flex justify-content-center mt-4 pt-2 m-2">

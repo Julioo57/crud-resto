@@ -62,7 +62,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // pour le popup catégorie
     const btnPopup = document.querySelector(".btnPopup");
-    const popup = document.querySelector(".popup");
+    const popup = document.querySelector(".popupAdd");
     const btnClose = document.querySelector(".btn-close");
     const btnAddCategorie = document.querySelector(".btnAddCategorie");
 

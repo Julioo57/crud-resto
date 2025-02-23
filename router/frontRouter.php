@@ -1,4 +1,5 @@
 <?php
+require_once '../controller/requeteController.php';
 // Démarre la session pour pouvoir accéder à la session de l'utilisateur
 session_start();
 

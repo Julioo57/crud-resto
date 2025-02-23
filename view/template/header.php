@@ -7,11 +7,13 @@ $userController->checkLogin(); // Vérifie la connexion de l'utilisateur
 // Récupérer les informations utilisateur depuis la session
 $user = $_SESSION['user'];
 ?>
+
 <header class="p-3 p  b-3 border-bottom bg-white">
     <div class="container">
+      
       <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
         <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 link-body-emphasis text-decoration-none">
-          <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"></use></svg>
+          <img src="../../public/img/logo_resto.webp" class="bi me-2 rounded-circle" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="landing.php"></use></img>
         </a>
 
         <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
@@ -33,7 +35,7 @@ $user = $_SESSION['user'];
             <?php
             if (isset($user['droits'])) {
                 if ($user['droits'] == 1) {
-                    echo '<li><a class="dropdown-item" href="admin/index.php">Gestion Administrative</a></li>';
+                    echo '<li><a class="dropdown-item" href="../admin/admin.php">Gestion Administrative</a></li>';
                 } elseif ($user['droits'] == 2) {
                     echo '<li><a class="dropdown-item disabled" href="#" aria-disabled="true">Gestion Administrative</a></li>';
                 }

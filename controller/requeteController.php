@@ -27,4 +27,7 @@ $sql = "SELECT p.type_prestation FROM `prestation` AS p;";
 $stmt = $pdo->prepare($sql);
 $stmt->execute();
 $prestations = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+
+// requete pour la aprtie back 
 ?> 

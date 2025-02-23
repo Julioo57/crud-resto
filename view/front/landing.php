@@ -19,6 +19,9 @@ $user = $_SESSION['user'];
 </head>
 <body class="bg-body-secondary">
 <?php require_once  '../template/header.php'; ?>
+<section id="accueil">
+<?php require_once  '../front/accueil.php'; ?>
+</section>
 <section id="Tarif">
 <?php require_once  '../front/tarif.php'; ?>
 </section>

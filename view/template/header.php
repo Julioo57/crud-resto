@@ -9,8 +9,6 @@ $user = $_SESSION['user'];
 ?>
 
 <header class="p-3 p  b-3 border-bottom bg-white">
-    <div class="container">
-      
       <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
         <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 link-body-emphasis text-decoration-none">
           <img src="../../public/img/logo_resto.webp" class="bi me-2 rounded-circle" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="landing.php"></use></img>
@@ -46,8 +44,6 @@ $user = $_SESSION['user'];
             <li><hr class="dropdown-divider"></li>
             <li><a class="dropdown-item" href="logout.php">Se déconnecter</a></li>
         </ul>
-      </div>
-
       </div>
     </div>
   </header>

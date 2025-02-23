@@ -7,41 +7,41 @@ $userController->checkLogin(); // Vérifie la connexion de l'utilisateur
 // Récupérer les informations utilisateur depuis la session
 $user = $_SESSION['user'];
 ?>
-<div class="d-flex flex-column flex-shrink-0 p-3 text-bg-dark vh-100" style="width: 280px;">
-    <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-      <svg class="bi pe-none me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
+<div class="sideBar d-none flex-column flex-shrink-0 p-3 text-bg-dark vh-100 fixed position-absolute top-0 start-0" style="width: 280px; z-index:1000;">
+    <div href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+      <img src="../../public/img/logo_resto.webp" class="bi pe-none me-2 rounded-circle" width="40" height="32"><use xlink:href="#bootstrap"></use></img>
       <span class="fs-4">DashBoard</span>
-    </a>
+    </div>
     <hr>
     <ul class="nav nav-pills flex-column mb-auto">
       <li class="nav-item">
-        <a href="#" class="nav-link text-white" aria-current="page">
+        <a href="categorie.php" class="nav-link text-white" aria-current="page">
           <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#home"></use></svg>
-          Home
+          Catégorie
         </a>
       </li>
       <li>
-        <a href="#" class="nav-link text-white">
+        <a href="prestation.php" class="nav-link text-white">
           <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#speedometer2"></use></svg>
-          Dashboard
+          Prestation
         </a>
       </li>
       <li>
-        <a href="#" class="nav-link text-white">
+        <a href="tarif.php" class="nav-link text-white">
           <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#table"></use></svg>
-          Orders
+          Tarif
         </a>
       </li>
       <li>
-        <a href="#" class="nav-link text-white">
+        <a href="droits.php" class="nav-link text-white">
           <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#grid"></use></svg>
-          Products
+          Droits
         </a>
       </li>
       <li>
-        <a href="#" class="nav-link text-white">
+        <a href="users.php" class="nav-link text-white">
           <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#people-circle"></use></svg>
-          Customers
+          Utilisateurs
         </a>
       </li>
     </ul>

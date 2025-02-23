@@ -10,6 +10,9 @@ document.addEventListener("DOMContentLoaded", function() {
     const tarifRevenueMoyen = document.querySelector(".TarifMoyenRevenue");
     const tarifRevenueGros = document.querySelector(".TarifGrosRevenue");
     const tarifVisiteur = document.querySelector(".TarifVisiteur");
+    // btnpanel & sidebalr 
+    const btnPanel = document.querySelector(".btn-panel");
+    const sideBar = document.querySelector(".sideBar");
 
     // Vérifie que les éléments existent dans le DOM avant d'ajouter des événements
     if (petitRevenue) {
@@ -50,4 +53,18 @@ document.addEventListener("DOMContentLoaded", function() {
             element.classList.add("d-block");
         }
     }
+        // fonction pour afficher/masquer la sidebar
+        if (btnPanel && sideBar) {  // Vérifier que les éléments existent
+            btnPanel.addEventListener("click", function() {
+                if (sideBar.classList.contains("d-none")) {
+                    sideBar.classList.remove("d-none");
+                    sideBar.classList.add("d-flex");
+                } else {
+                    sideBar.classList.remove("d-flex");
+                    sideBar.classList.add("d-none");
+                }
+            });
+        } else {
+            console.error("btnPanel ou sideBar introuvable !");
+        }
 });

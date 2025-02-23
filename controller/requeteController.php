@@ -30,4 +30,9 @@ $prestations = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 
 // requete pour la aprtie back 
+// Requête poru afficher presta
+$sql = "SELECT * FROM `categorie`;";
+$stmt = $pdo->prepare($sql);
+$stmt->execute();
+$categorie = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?> 

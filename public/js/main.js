@@ -10,11 +10,27 @@ document.addEventListener("DOMContentLoaded", function() {
     const tarifRevenueMoyen = document.querySelector(".TarifMoyenRevenue");
     const tarifRevenueGros = document.querySelector(".TarifGrosRevenue");
     const tarifVisiteur = document.querySelector(".TarifVisiteur");
-    // btnpanel & sidebalr 
+
+    // btnPanel & sideBar 
     const btnPanel = document.querySelector(".btn-panel");
     const sideBar = document.querySelector(".sideBar");
 
-    // Vérifie que les éléments existent dans le DOM avant d'ajouter des événements
+    // Vérif que ca existe avant de faire debug 
+    function toggleVisibility(element) {
+        const allTarifZones = [tarifRevenuePetit, tarifRevenueMoyen, tarifRevenueGros, tarifVisiteur];
+        allTarifZones.forEach(zone => {
+            if (zone !== element) {
+                zone.classList.remove("d-block");
+                zone.classList.add("d-none");
+            }
+        });
+
+        if (element.classList.contains("d-none")) {
+            element.classList.remove("d-none");
+            element.classList.add("d-block");
+        }
+    }
+
     if (petitRevenue) {
         petitRevenue.addEventListener("click", function() {
             toggleVisibility(tarifRevenuePetit);
@@ -36,35 +52,31 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    // Fonction pour afficher/masquer une zone
-    function toggleVisibility(element) {
-        // Masquer toutes les zones
-        const allTarifZones = [tarifRevenuePetit, tarifRevenueMoyen, tarifRevenueGros, tarifVisiteur];
-        allTarifZones.forEach(function(zone) {
-            if (zone !== element) {
-                zone.classList.remove("d-block");
-                zone.classList.add("d-none");
-            }
+    // Fonction pour afficher/masquer la sidebar
+    if (btnPanel && sideBar) {
+        btnPanel.addEventListener("click", function() {
+            sideBar.classList.toggle("d-none");
+            sideBar.classList.toggle("d-flex");
         });
-
-        // Afficher la zone sélectionnée
-        if (element.classList.contains("d-none")) {
-            element.classList.remove("d-none");
-            element.classList.add("d-block");
-        }
     }
-        // fonction pour afficher/masquer la sidebar
-        if (btnPanel && sideBar) {  // Vérifier que les éléments existent
-            btnPanel.addEventListener("click", function() {
-                if (sideBar.classList.contains("d-none")) {
-                    sideBar.classList.remove("d-none");
-                    sideBar.classList.add("d-flex");
-                } else {
-                    sideBar.classList.remove("d-flex");
-                    sideBar.classList.add("d-none");
-                }
-            });
-        } else {
-            console.error("btnPanel ou sideBar introuvable !");
-        }
+
+    // pour le popup catégorie
+    const btnPopup = document.querySelector(".btnPopup");
+    const popup = document.querySelector(".popup");
+    const btnClose = document.querySelector(".btn-close");
+    const btnAddCategorie = document.querySelector(".btnAddCategorie");
+
+    if (btnPopup && popup) {
+        btnPopup.addEventListener("click", function() {
+            popup.classList.toggle("d-none");
+            popup.classList.toggle("d-block");
+        });
+    }
+    // Bouton pour fermer le popup
+    if (btnClose) {
+        btnClose.addEventListener("click", function() {
+            popup.classList.add("d-none");
+            popup.classList.remove("d-block");
+        });
+    }
 });

@@ -27,7 +27,7 @@ $user = $_SESSION['user'];
         </a>
       </li>
       <li>
-        <a href="tarif.php" class="nav-link text-white">
+        <a href="adminTarif.php" class="nav-link text-white">
           <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#table"></use></svg>
           Tarif
         </a>

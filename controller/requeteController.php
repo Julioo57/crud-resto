@@ -131,6 +131,84 @@ class requeteController {
         // Retourner la première ligne (il doit y en avoir une seule)
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+    // affichage table tarif 
+    // crud tarif 
+    public function getTarif() {
+        // Connexion à la base de données
+        $pdo = Database::getConnection();
+        
+        // Préparation de la requête pour récupérer toutes les catégories
+        $query = "SELECT * FROM tarif";
+        $stmt = $pdo->prepare($query);
+        
+        // Exécution de la requête
+        $stmt->execute();
+        
+        // Retourner les résultats sous forme de tableau associatif
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+     // add id prestation car cle étrangère 
+// Fonction pour récupérer le plus grand id_prestation et ajouter 1
+
+
+    // Fonction pour mettre à jour un tarif
+    public function updateTarif($idPrestation, $idCategorie, $nomTarif) {
+        // Connexion à la base de données
+        $pdo = Database::getConnection();   
+        // Préparer la requête SQL pour mettre à jour le tarif
+        $query = "UPDATE tarif SET prix = :nomTarif WHERE id_prestation = :idPrestation,id_categorie = :idCategorie";
+        
+        // Exécuter la requête préparée
+        $stmt = $pdo->prepare($query);
+        $stmt->bindParam(':idPrestation', $idPrestation);
+        $stmt->bindParam(':idCategorie', $idCategorie);
+        $stmt->bindParam(':nomTarif', $nomTarif);
+
+        // Exécuter la mise à jour
+        $stmt->execute();
+    }
+
+function addTarif($idPrestation, $idCategorie, $idTarif) {
+    $pdo = Database::getConnection();   
+    // Requête pour insérer les valeurs dans la table tarif
+    $query = "INSERT INTO tarif (id_prestation, id_categorie, prix) VALUES (?, ?, ?)";
+    $stmt = $pdo->prepare($query);
+
+    // Exécution de la requête
+    $stmt->execute([$idPrestation, $idCategorie, $idTarif]);
+
+    header('Location: adminTarif.php');
+    exit();
+}
+
+
+public function deleteTarif($idPrestation, $idCategorie) {
+    // Connexion à la base de données
+    $pdo = Database::getConnection();
+    
+    // Requête pour supprimer le tarif correspondant
+    $query = "DELETE FROM tarif WHERE id_prestation = ? AND id_categorie = ?";
+    
+    // Préparer et exécuter la requête
+    $stmt = $pdo->prepare($query);
+    $stmt->execute([$idPrestation, $idCategorie]);
+    header('Location: adminTarif.php');
+    exit();
+}
+
+    
+    
+     // Méthode pour récupérer une catégorie par son ID
+     public function getTarifById($idTarif) {
+        $pdo = Database::getConnection();
+        $query = "SELECT * FROM Tarif WHERE id_Prestation = ?";
+        $stmt = $pdo->prepare($query);
+        $stmt->execute([$idTarif]);
+        
+        // Retourner la première ligne (il doit y en avoir une seule)
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+    
     
 }
 

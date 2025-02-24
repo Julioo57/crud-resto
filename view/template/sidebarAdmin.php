@@ -15,13 +15,13 @@ $user = $_SESSION['user'];
     <hr>
     <ul class="nav nav-pills flex-column mb-auto">
       <li class="nav-item">
-        <a href="categorie.php" class="nav-link text-white" aria-current="page">
+        <a href="adminCategorie.php" class="nav-link text-white" aria-current="page">
           <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#home"></use></svg>
           Catégorie
         </a>
       </li>
       <li>
-        <a href="prestation.php" class="nav-link text-white">
+        <a href="adminPrestation.php" class="nav-link text-white">
           <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#speedometer2"></use></svg>
           Prestation
         </a>

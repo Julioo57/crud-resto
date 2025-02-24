@@ -65,6 +65,8 @@ document.addEventListener("DOMContentLoaded", function() {
     const popup = document.querySelector(".popupAdd");
     const btnClose = document.querySelector(".btn-close");
     const btnAddCategorie = document.querySelector(".btnAddCategorie");
+    const btnEdit = document.querySelector(".btnEdit");
+    const popupEdit = document.querySelector(".popupEdit");
 
     if (btnPopup && popup) {
         btnPopup.addEventListener("click", function() {
@@ -77,6 +79,12 @@ document.addEventListener("DOMContentLoaded", function() {
         btnClose.addEventListener("click", function() {
             popup.classList.add("d-none");
             popup.classList.remove("d-block");
+        });
+    }
+    if (btnEdit && popupEdit) {
+        btnEdit.addEventListener("click", function() {
+            popupEdit.classList.toggle("d-none");
+            popupEdit.classList.toggle("d-block");
         });
     }
 });

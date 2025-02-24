@@ -7,7 +7,7 @@ $userController->checkLogin(); // Vérifie la connexion de l'utilisateur
 // Récupérer les informations utilisateur depuis la session
 $user = $_SESSION['user'];
 ?>
-
+<body>
 <header class="p-3 p  b-3 border-bottom bg-white">
       <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
         <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 link-body-emphasis text-decoration-none">
@@ -47,3 +47,5 @@ $user = $_SESSION['user'];
       </div>
     </div>
   </header>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>

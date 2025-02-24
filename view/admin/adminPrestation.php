@@ -1,6 +1,5 @@
 <?php 
 require_once __DIR__ . '/../../controller/requeteController.php';
-
 // Crée une instance du contrôleur
 $userController = new requeteController();
 
@@ -11,10 +10,10 @@ $adminPrestation = $userController->getPrestations(); // Assurez-vous que cette 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['nomPrestation'])) {
     $valeurInputPrestation = htmlspecialchars($_POST['nomPrestation']); // Récupérer et sécuriser la valeur
 
-    // Vérifier si l'action est "addCategorie"
+    // Vérifier si l'action est "addPrestation"
     if (isset($_GET['action']) && $_GET['action'] === 'addPrestation') {
         // Appeler la méthode pour ajouter la catégorie
-        $userController->addCategorie($valeurInputPrestation);
+        $userController->addPrestation($valeurInputPrestation);
         
         // Rediriger après ajout pour éviter le double envoi de formulaire
         header('Location: adminPrestation.php');
@@ -34,10 +33,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['idPrestation'])) {
         exit;
     }
 }
-?>
 
+// Crée une instance du contrôleur
+$userController = new requeteController();
+
+// Récupérer toutes les catégories depuis la base de données
+$adminPrestation = $userController->getPrestations(); // Assurez-vous que cette méthode existe dans votre contrôleur
+?>
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -45,15 +49,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['idPrestation'])) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
 <body>
-    <a href="../admin/admin.php" class="btn btn-primary">Retour</a>
-    <h1 class="text-center">Gestion des Prestation</h1>
+    
+</body>
+</html>
+<a href="../admin/admin.php" class="btn btn-primary">Retour</a>
+    <h1 class="text-center">Gestion des Prestations</h1>
 <!-- Bouton add design fais -->
-<button type="button" class="btn btn-outline-success btnPopup" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
+<button type="button" class="btn btn-outline-success btnPopup" data-bs-toggle="modal" data-bs-target="#addPrestationModal">
     Ajouter une Prestation
 </button>
 
 <!-- Modal -->
-<div class="modal fade" id="addCategoryModal" tabindex="-1" aria-labelledby="addCategoryModalLabel" aria-hidden="true">
+<div class="modal fade" id="addPrestationModal" tabindex="-1" aria-labelledby="addPrestationModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content rounded-4 shadow-lg">
             <div class="modal-header border-bottom-0">
@@ -80,15 +87,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['idPrestation'])) {
             <h5 class="text-center">table Prestation</h5>
             <table class="m-5 table table-striped w-50 text-center mx-auto">
                 <tr>
-                    <th class="p-2">ID Prestation</th>
-                    <th class="p-2">Nom Prestation</th>
+                    <th class="p-2">ID Catégorie</th>
+                    <th class="p-2">type Prestation</th>
                     <th class="p-2">Modifier</th>
                     <th class="p-2">Supprimer</th>
                 </tr>
                 <?php foreach ($adminPrestation as $pres): ?>
                     <tr>
-                        <td><?= htmlspecialchars($pres['id_Prestation']); ?></td>
-                        <td><?= htmlspecialchars($pres['libelle_Prestation']); ?></td>
+                        <td><?= htmlspecialchars($pres['id_prestation']); ?></td>
+                        <td><?= htmlspecialchars($pres['type_prestation']); ?></td>
                         <td>
                             <button class="btn btn-primary btnEdit" data-bs-toggle="modal">
                                 <i class="fa-solid fa-pen-to-square"></i>
@@ -96,7 +103,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['idPrestation'])) {
                         </td>
                         <td><!-- delete form avec id cache et btn  -->
                             <form method="post" action="adminPrestation.php?action=deletePrestation">
-                                <input type="hidden" name="idPrestation" value="<?= htmlspecialchars($cate['id_Prestation']); ?>">
+                            <input type="hidden" name="idPrestation" value="<?= htmlspecialchars($pres['id_prestation']); ?>">
                                 <button type="submit" class="btn btn-danger btnDelete">
                                     <i class="fa-solid fa-trash-xmark"></i>
                                 </button>
@@ -112,4 +119,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['idPrestation'])) {
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
-//// la page admin bloque tout

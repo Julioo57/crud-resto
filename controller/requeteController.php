@@ -1,6 +1,5 @@
 <?php 
 require_once __DIR__ . '/../model/Bdd.php';
-require_once __DIR__ . '/../view/admin/adminCategorie.php';
 $pdo = Database::getConnection();
 // Requête poru recupe les categrories egal a 1 
 $sql = "SELECT t.prix, p.type_prestation FROM `tarif` AS t NATURAL JOIN prestation AS p NATURAL JOIN categorie AS c WHERE c.id_categorie = 1;";
@@ -105,7 +104,7 @@ class requeteController {
         $pdo = Database::getConnection();
       
         // placeholde pour verifier 
-        $query = "INSERT INTO Prestation (libelle_Prestation) VALUES (?)";
+        $query = "INSERT INTO Prestation (type_Prestation) VALUES (?)";
         
         // Préparez la requête
         $stmt = $pdo->prepare($query);
@@ -114,17 +113,14 @@ class requeteController {
         $stmt->execute([$valeurInputPrestation]);
     }
 
-    public function deletePrestation($idPrestation) {
-        // Connexion à la base de données
+    function deletePrestation($idPrestation) {
         $pdo = Database::getConnection();
-        
-        // Préparation de la requête de suppression
         $query = "DELETE FROM Prestation WHERE id_Prestation = ?";
         $stmt = $pdo->prepare($query);
-        
-        // Exécution de la requête avec l'ID de la catégorie à supprimer
         $stmt->execute([$idPrestation]);
     }
+    
+    
      // Méthode pour récupérer une catégorie par son ID
      public function getPrestationById($idPrestation) {
         $pdo = Database::getConnection();

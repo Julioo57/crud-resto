@@ -106,7 +106,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['idCategorie'])) {
                     </tr>
                 <?php endforeach; ?>
             </table>
-        </div>
+</div>
 <script src="https://kit.fontawesome.com/ab09c2f170.js" crossorigin="anonymous"></script>
 <script src="../../public/js/main.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

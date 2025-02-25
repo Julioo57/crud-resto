@@ -335,35 +335,28 @@ public function deleteTarif($idPrestation, $idCategorie) {
     }
 
 // foncrion pourn users 
-    public function addUsers($inputUsersNom , $inputUsersPrenom, $inputUsersDroits, $inputUsersMail, $inputUsersMdp, $inputUsersAvatar) {
-        // Connexion à la base de données
-        $pdo = Database::getConnection();
-    
-        // Vérifier si l'email existe déjà dans la base de données
-        $checkSql = "SELECT id_users FROM users WHERE mail = :email";
-        $checkStmt = $pdo->prepare($checkSql);
-        $checkStmt->bindParam(':email', $inputUsersMail, PDO::PARAM_STR);
-        $checkStmt->execute();
+public function uptUsers($inputUsersNom, $inputUsersPrenom,$inputUsersMail,$inputUsersMdp,$inputUsersDroits) {
+    $pdo = Database::getConnection();
 
-        if ($checkStmt->fetch()) {
-            echo "Cet email est déjà utilisé.";
-            return;
+    // Préparation de la requête pour mettre à jour une catégori
+    $query = "UPDATE users SET nom ='?', prenom ='?', mail ='?', password ='?', droits ='?' WHERE id_users ='?'";
+
+    try {
+        // Préparez la requête
+        $stmt = $pdo->prepare($query);
+
+        // Liez les paramètres à la requête
+        $stmt->execute([$inputUsersNom, $inputUsersPrenom,$inputUsersMail,$inputUsersMdp,$inputUsersDroits]);
+
+        if ($stmt->rowCount() > 0) {
+            echo "La catégorie a été mise à jour avec succès.";
+        } else {
+            echo "Aucune modification effectuée. Peut-être que l'ID n'existe pas ou les données sont les mêmes.";
         }
-        $hashedPassword = password_hash($inputUsersMdp, PASSWORD_DEFAULT);
-        // Insertion de l'utilisateur dans la base de données
-        $sql = "INSERT INTO users (nom, prenom, mail, password, droits, avatar) 
-                VALUES (:nom, :prenom, :email, :password, :droits, :avatar)";
-        $stmt = $pdo->prepare($sql);
-        $stmt->bindParam(':nom', $inputUsersNom, PDO::PARAM_STR);
-        $stmt->bindParam(':prenom', $inputUsersPrenom, PDO::PARAM_STR);
-        $stmt->bindParam(':email', $inputUsersMail, PDO::PARAM_STR);
-        $stmt->bindParam(':password', $hashedPassword, PDO::PARAM_STR);
-        $stmt->bindParam(':droits', $inputUsersDroits, PDO::PARAM_STR);
-        $stmt->bindParam(':avatar', $inputUsersAvatar, PDO::PARAM_STR);
-
-        $stmt->execute();
-
+    } catch (PDOException $e) {
+        echo "Erreur lors de la mise à jour : " . $e->getMessage();
     }
+}
     public function deleteUsers($idUsers) {
         // Connexion à la base de données
         $pdo = Database::getConnection();

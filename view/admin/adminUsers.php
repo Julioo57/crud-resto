@@ -16,15 +16,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['nomUsers'])) {
     $inputUsersDroits = htmlspecialchars($_POST['droitsUsers']); // Récupérer et sécuriser la valeur
     $inputUsersAvatar = htmlspecialchars($_POST['avatarUsers']); // Récupérer et sécuriser la valeur
 
-    // Vérifier si l'action est "addUsers"
-    if (isset($_GET['action']) && $_GET['action'] === 'addUsers') {
-        // Appeler la méthode pour ajouter la catégorie
-        $userController->addUsers($inputUsersNom , $inputUsersPrenom, $inputUsersDroits, $inputUsersMail, $inputUsersMdp, $inputUsersAvatar);
-        
-        // Rediriger après ajout pour éviter le double envoi de formulaire
+
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['nomUsers'])) {
+    $valeurInputUsers = htmlspecialchars($_POST['nomUsers']); // Récupérer et sécuriser la valeur
+    $idUsers = $_POST['idUsers']; // Assurez-vous que cette variable existe et contient la valeur de l'ID
+
+    if (isset($_GET['action']) && $_GET['action'] === 'updateUsers') {
+        $userController->uptUsers($inputUsersNom, $inputUsersPrenom,$inputUsersMail,$inputUsersMdp,$inputUsersDroits,$inputUsersAvatar);
         header('Location: adminUsers.php');
         exit;
     }
+}
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['idUsers'])) {
@@ -50,58 +52,88 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['idUsers'])) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
 <body>
+<script>
+    // Assure-toi que ce script est chargé après le modal et le bouton "Edit"
+    document.addEventListener('DOMContentLoaded', function () {
+        // Sélectionner tous les boutons d'édition
+        const editButtons = document.querySelectorAll('.BtnEdit');
+
+        // Ajouter un écouteur d'événements pour chaque bouton
+        editButtons.forEach(function (button) {
+            button.addEventListener('click', function () {
+                // Récupérer les données des attributs data-*
+                const userId = button.getAttribute('data-id');
+                const userNom = button.getAttribute('data-nom');
+                const userPrenom = button.getAttribute('data-prenom');
+                const userEmail = button.getAttribute('data-email');
+                const userAvatar = button.getAttribute('data-avatar');
+                const userDroits = button.getAttribute('data-droits');
+
+                // Insérer ces valeurs dans le modal
+                document.getElementById('idUser').value = userId;
+                document.getElementById('editNom').value = userNom;
+                document.getElementById('editPrenom').value = userPrenom;
+                document.getElementById('editEmail').value = userEmail;
+                document.getElementById('editAvatar').value = userAvatar;
+                document.getElementById('editDroits').value = userDroits;
+            });
+        });
+    });
+</script>
+
     <a href="../admin/admin.php" class="btn btn-primary">Retour</a>
     <h1 class="text-center">Gestion des Users</h1>
 <!-- Bouton add design fais -->
-<button type="button" class="btn btn-outline-success btnPopup" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
-    Ajouter un Users
-</button>
+<a href="../front/register.php" class="btn btn-outline-success btnPopup">
+    Ajouter un Utilisateur
+</a>
 
 <!-- Modal -->
-<div class="modal fade" id="addCategoryModal" tabindex="-1" aria-labelledby="addCategoryModalLabel" aria-hidden="true">
+<!-- Modal Modifier un Utilisateur -->
+<div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content rounded-4 shadow-lg">
-            <div class="modal-header border-bottom-0">
-                <h5 class="modal-title" id="addCategoryModalLabel">Ajouter un Users</h5>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editUserModalLabel">Modifier l'Utilisateur</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p class="text-muted">Veuillez entrer les informations du User.</p>
-                <form method="post" action="adminUsers.php?action=addUsers">
+                <form method="post" action="adminUsers.php?action=updateUser" enctype="multipart/form-data">
+                    <!-- ID de l'utilisateur (caché) -->
+                    <input type="hidden" name="idUser" id="idUser">
+
                     <div class="mb-3">
-                        <label for="nomUsers" class="form-label">Nom</label>
-                        <input type="text" class="form-control" id="nomUsers" name="nomUsers" placeholder="Nom du Users" required>
+                        <label for="editNom" class="form-label">Nom</label>
+                        <input type="text" class="form-control" id="editNom" name="nom" required>
                     </div>
+
                     <div class="mb-3">
-                        <label for="prenomUsers" class="form-label">Prenom</label>
-                        <input type="text" class="form-control" id="prenomUsers" name="prenomUsers" placeholder="prénom du Users" required>
+                        <label for="editPrenom" class="form-label">Prénom</label>
+                        <input type="text" class="form-control" id="editPrenom" name="prenom" required>
                     </div>
+
                     <div class="mb-3">
-                        <label for="mailUsers" class="form-label">mail</label>
-                        <input type="email" class="form-control" id="mailUsers" name="mailUsers" placeholder="nom@gmail.fr" required>
+                        <label for="editEmail" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="editEmail" name="email" required>
                     </div>
+
                     <div class="mb-3">
-                        <label for="passwordUsers" class="form-label">Mot de passe</label>
-                        <input type="password" class="form-control" id="passwordUsers" name="passwordUsers" placeholder="...." required>
-                    </div>
-                    <div class="mb-3">
-                        <select name="droitsUsers" id="droits" class="select form-control form-control-lg">
-                            <option value="2">Utilisateur</option>
+                        <label for="editDroits" class="form-label">Droits</label>
+                        <select class="form-select" id="editDroits" name="droits" required>
                             <option value="1">Admin</option>
+                            <option value="2">User</option>
                         </select>
                     </div>
-                    <div class="mb-3">
-                            <label for="avatarUsers" class="form-label">Avatar</label>
-                            <input class="form-control" name="avatarUsers" type="file" id="formFile"  accept="image/*">
-                    </div>
+
                     <div class="d-flex justify-content-end">
-                        <button type="submit" class="btn btn-success">Ajouter le Users</button>
+                        <button type="submit" class="btn btn-warning">Modifier</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
+
 
 <div class=" d-block d-md-flex flex-column flex-md-row align-items-center justify-content-center text-center">
             <h5 class="text-center">table Users</h5>
@@ -125,9 +157,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['idUsers'])) {
                         <td><?= htmlspecialchars($usr['avatar']); ?></td>
                         <td><?= htmlspecialchars($usr['droits']); ?></td>
                         <td>
-                            <button class="btn btn-primary btnEdit" data-bs-toggle="modal">
-                                <i class="fa-solid fa-pen-to-square"></i>
-                            </button>
+                        <button class="btn btn-primary BtnEdit" 
+                            data-bs-toggle="modal" 
+                            data-bs-target="#editUserModal" 
+                            data-id="<?= htmlspecialchars($usr['id_users']); ?>" 
+                            data-nom="<?= htmlspecialchars($usr['nom']); ?>"
+                            data-prenom="<?= htmlspecialchars($usr['prenom']); ?>"
+                            data-email="<?= htmlspecialchars($usr['mail']); ?>"
+                            data-avatar="<?= htmlspecialchars($usr['avatar']); ?>""
+                            data-droits="<?= htmlspecialchars($usr['droits']); ?>">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                        </button>
                         </td>
                         <td><!-- delete form avec id cache et btn  -->
                             <form method="post" action="adminUsers.php?action=deleteUsers">

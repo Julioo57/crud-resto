@@ -275,6 +275,28 @@ public function deleteTarif($idPrestation, $idCategorie) {
         $stmt->execute(['nomDroit' => $nomDroit]); // Utilisation correcte d'un tableau
     }
     
+    public function uptDroits($valeurInputDroits, $idDroits) {
+        $pdo = Database::getConnection();
+    
+        // Préparation de la requête pour mettre à jour une catégorie
+        $query = "UPDATE droits SET libelle_droits =? WHERE id_droits =?";
+    
+        try {
+            // Préparez la requête
+            $stmt = $pdo->prepare($query);
+    
+            // Liez les paramètres à la requête
+            $stmt->execute([$valeurInputDroits, $idDroits]);
+    
+            if ($stmt->rowCount() > 0) {
+                echo "La catégorie a été mise à jour avec succès.";
+            } else {
+                echo "Aucune modification effectuée. Peut-être que l'ID n'existe pas ou les données sont les mêmes.";
+            }
+        } catch (PDOException $e) {
+            echo "Erreur lors de la mise à jour : " . $e->getMessage();
+        }
+    }
 
     public function deleteDroit($idDroit) {
         // Connexion à la base de données

@@ -41,6 +41,32 @@ document.addEventListener('DOMContentLoaded', function () {
                 inputPrestation.value = nomPrestation; // Assigner le nom de la prestation à l'input
             }
         });
-    });
+    });// Assurez-vous que le sélecteur est correct
+        console.log("editButtons:", editButtons); // Vérifier qu'on sélectionne bien les boutons
+    
+        editButtons.forEach(button => {
+            button.addEventListener("click", function () {
+                console.log("Button clicked");
+    
+                const id = this.getAttribute("data-id");
+                const nomdroits = this.getAttribute("data-name");
+                console.log("ID:", id);
+                console.log("Nom des droits:", nomdroits);
+    
+                const inputHidden = document.getElementById("idDroits");
+                const inputdroits = document.getElementById("editDroits");
+    
+                if (inputHidden) {
+                    inputHidden.value = id; // Assigner l'ID à l'input caché
+                }
+                if (inputdroits) {
+                    inputdroits.value = nomdroits; // Assigner le nom du droit à l'input
+                }
+    
+                // Afficher le modal
+                const modal = new bootstrap.Modal(document.getElementById('editDroitsModal'));
+                modal.show();
+            });
+        });
 });
 

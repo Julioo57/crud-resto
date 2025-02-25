@@ -21,6 +21,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['nomDroit'])) {
         exit;
     }
 }
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['nomDroits'])) {
+    $valeurInputDroits = htmlspecialchars($_POST['nomDroits']); // Récupérer et sécuriser la valeur
+    $idDroits = $_POST['idDroits']; // Assurez-vous que cette variable existe et contient la valeur de l'ID
+
+    if (isset($_GET['action']) && $_GET['action'] === 'updateDroits') {
+        $userController->uptDroits($valeurInputDroits, $idDroits);
+        header('Location: adminDroits.php');
+        exit;
+    }
+}
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['idDroit'])) {
     $idDroit = $_POST['idDroit'];
@@ -75,6 +85,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['idDroit'])) {
         </div>
     </div>
 </div>
+<!--  Edit Droit -->
+<div class="modal fade" id="editDroitsModal" tabindex="-1" aria-labelledby="editDroitsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editDroitsModalLabel">Modifier le Droit</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="adminDroits.php?action=updateDroits">
+                    <input type="hidden" name="idDroits" id="idDroits">
+                    <div class="mb-3">
+                        <label for="editDroits" class="form-label">Nom du droit</label>
+                        <input type="text" class="form-control" id="editDroits" name="nomDroits" required>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <button type="submit" class="btn btn-warning">Modifier</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class=" d-block d-md-flex flex-column flex-md-row align-items-center justify-content-center text-center">
             <h5 class="text-center">table Droit</h5>
@@ -90,9 +123,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['idDroit'])) {
                         <td><?= htmlspecialchars($drt['id_droits']); ?></td>
                         <td><?= htmlspecialchars($drt['libelle_droits']); ?></td>
                         <td>
-                            <button class="btn btn-primary btnEdit" data-bs-toggle="modal">
-                                <i class="fa-solid fa-pen-to-square"></i>
-                            </button>
+                        <button class="btn btn-primary BtnEdit" 
+                            data-bs-toggle="modal" 
+                            data-bs-target="#editDroitsModal" 
+                            data-id="<?= htmlspecialchars($drt['id_droits']); ?>" 
+                            data-name="<?= htmlspecialchars($drt['libelle_droits']); ?>">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                        </button>
                         </td>
                         <td><!-- delete form avec id cache et btn  -->
                             <form method="post" action="adminDroits.php?action=deleteDroit">
@@ -108,7 +145,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['idDroit'])) {
             </table>
 </div>
 <script src="https://kit.fontawesome.com/ab09c2f170.js" crossorigin="anonymous"></script>
-<script src="../../public/js/main.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../../public/js/GestionCrud.js"></script>
 </body>
 </html>

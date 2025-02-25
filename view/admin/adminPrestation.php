@@ -3,7 +3,7 @@ require_once __DIR__ . '/../../controller/requeteController.php';
 // Crée une instance du contrôleur
 $userController = new requeteController();
 
-// Récupérer toutes les catégories depuis la base de données
+// Récupérer toutes les prestations depuis la base de données
 $adminPrestation = $userController->getPrestations(); // Assurez-vous que cette méthode existe dans votre contrôleur
 
 // Vérifie si le formulaire a été soumis
@@ -12,7 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['nomPrestation'])) {
 
     // Vérifier si l'action est "addPrestation"
     if (isset($_GET['action']) && $_GET['action'] === 'addPrestation') {
-        // Appeler la méthode pour ajouter la catégorie
+        // Appeler la méthode pour ajouter la prestation
         $userController->addPrestation($valeurInputPrestation);
         
         // Rediriger après ajout pour éviter le double envoi de formulaire
@@ -20,16 +20,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['nomPrestation'])) {
         exit;
     }
 }
+
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['nomPrestation'])) {
     $valeurInputPrestation = htmlspecialchars($_POST['nomPrestation']); // Récupérer et sécuriser la valeur
     $idPrestation = $_POST['idPrestation']; // Assurez-vous que cette variable existe et contient la valeur de l'ID
 
     if (isset($_GET['action']) && $_GET['action'] === 'updatePrestation') {
-        var_dump($valeurInputPrestation, $idPrestation); // Vérifiez ici aussi
         $userController->uptPrestation($valeurInputPrestation, $idPrestation);
-        header('Cache-Control: no-cache, no-store, must-revalidate');
-        header('Pragma: no-cache');
-        header('Expires: 0');
         header('Location: adminPrestation.php');
         exit;
     }
@@ -39,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['idPrestation'])) {
     $idPrestation = $_POST['idPrestation'];
     
     if (isset($_GET['action']) && $_GET['action'] === 'deletePrestation') {
-        // Appeler la méthode pour supprimer la catégorie
+        // Appeler la méthode pour supprimer la prestation
         $userController->deletePrestation($idPrestation);
         
         // Rediriger après suppression pour éviter le double envoi de formulaire
@@ -51,38 +48,40 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['idPrestation'])) {
 // Crée une instance du contrôleur
 $userController = new requeteController();
 
-// Récupérer toutes les catégories depuis la base de données
-$adminPrestation = $userController->getPrestations(); // Assurez-vous que cette méthode existe dans votre contrôleur
+// Récupérer toutes les prestations depuis la base de données
+$adminPrestation = $userController->getPrestations(); 
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prestation | crud</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <title>Gestion des Prestations</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://kit.fontawesome.com/ab09c2f170.css" rel="stylesheet">
 </head>
 <body>
-    
-</body>
-</html>
-<a href="../admin/admin.php" class="btn btn-primary">Retour</a>
-    <h1 class="text-center">Gestion des Prestations</h1>
-<!-- Bouton add design fais -->
-<button type="button" class="btn btn-outline-success btnPopup" data-bs-toggle="modal" data-bs-target="#addPrestationModal">
-    Ajouter une Prestation
-</button>
 
-<!-- Modal -->
+<!-- Header -->
+<div class="container my-5">
+<div class="d-flex justify-content-between align-items-center mb-4">
+            <a href="../admin/admin.php" class="btn btn-primary">Retour</a>
+            <h1 class="text-center">Gestion des catégories</h1>
+            <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#addPrestationModal">
+                Ajouter une Prestation
+            </button>
+        </div>
+
+<!-- Modal Prestation -->
 <div class="modal fade" id="addPrestationModal" tabindex="-1" aria-labelledby="addPrestationModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content rounded-4 shadow-lg">
-            <div class="modal-header border-bottom-0">
-                <h5 class="modal-title" id="addCategoryModalLabel">Ajouter une Prestation</h5>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addPrestationModalLabel">Ajouter une Prestation</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p class="text-muted">Veuillez entrer le nom de la nouvelle Prestation.</p>
                 <form method="post" action="adminPrestation.php?action=addPrestation">
                     <div class="mb-3">
                         <label for="nomPrestation" class="form-label">Nom de la Prestation</label>
@@ -97,7 +96,7 @@ $adminPrestation = $userController->getPrestations(); // Assurez-vous que cette 
     </div>
 </div>
 
-<!-- Modal - Modifier Prestation -->
+<!--  Edit Prestation -->
 <div class="modal fade" id="editPrestationModal" tabindex="-1" aria-labelledby="editPrestationModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -107,14 +106,11 @@ $adminPrestation = $userController->getPrestations(); // Assurez-vous que cette 
             </div>
             <div class="modal-body">
                 <form method="post" action="adminPrestation.php?action=updatePrestation">
-                    <!-- Champ caché pour envoyer l'ID -->
                     <input type="hidden" name="idPrestation" id="idPrestation">
-
                     <div class="mb-3">
                         <label for="editPrestation" class="form-label">Nom de la Prestation</label>
                         <input type="text" class="form-control" id="editPrestation" name="nomPrestation" required>
                     </div>
-
                     <div class="d-flex justify-content-end">
                         <button type="submit" class="btn btn-warning">Modifier</button>
                     </div>
@@ -124,42 +120,45 @@ $adminPrestation = $userController->getPrestations(); // Assurez-vous que cette 
     </div>
 </div>
 
-
-<div class=" d-block d-md-flex flex-column flex-md-row align-items-center justify-content-center text-center">
-            <h5 class="text-center">table Prestation</h5>
-            <table class="m-5 table table-striped w-50 text-center mx-auto">
+<!-- Table Prestations -->
+<div class="container my-5">
+    <h5 class="text-center">Table des Prestations</h5>
+    <table class="table table-striped text-center">
+        <thead>
+            <tr>
+                <th>ID Prestation</th>
+                <th>Type Prestation</th>
+                <th>Modifier</th>
+                <th>Supprimer</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($adminPrestation as $pres): ?>
                 <tr>
-                    <th class="p-2">ID Catégorie</th>
-                    <th class="p-2">type Prestation</th>
-                    <th class="p-2">Modifier</th>
-                    <th class="p-2">Supprimer</th>
-                </tr>
-                <?php foreach ($adminPrestation as $pres): ?>
-                    <tr>
-                        <td><?= htmlspecialchars($pres['id_prestation']); ?></td>
-                        <td><?= htmlspecialchars($pres['type_prestation']); ?></td>
-                        <td>
-                            <button class="btn btn-primary BtnEdit" 
-                                data-bs-toggle="modal" 
-                                data-bs-target="#editPrestationModal" 
-                                data-id="<?= htmlspecialchars($pres['id_prestation']); ?>" 
-                                data-name="<?= htmlspecialchars($pres['type_prestation']); ?>">
-                                <i class="fa-solid fa-pen-to-square"></i>
+                    <td><?= htmlspecialchars($pres['id_prestation']); ?></td>
+                    <td><?= htmlspecialchars($pres['type_prestation']); ?></td>
+                    <td>
+                        <button class="btn btn-primary BtnEdit" 
+                            data-bs-toggle="modal" 
+                            data-bs-target="#editPrestationModal" 
+                            data-id="<?= htmlspecialchars($pres['id_prestation']); ?>" 
+                            data-name="<?= htmlspecialchars($pres['type_prestation']); ?>">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                        </button>
+                    </td>
+                    <td>
+                        <form method="post" action="adminPrestation.php?action=deletePrestation">
+                            <input type="hidden" name="idPrestation" value="<?= htmlspecialchars($pres['id_prestation']); ?>">
+                            <button type="submit" class="btn btn-danger">
+                                <i class="fa-solid fa-trash-xmark"></i>
                             </button>
-                        </td>
-                        <td><!-- delete form avec id cache et btn  -->
-                            <form method="post" action="adminPrestation.php?action=deletePrestation">
-                            <input type="hidden" id="idPrestation" name="idPrestation" value="<?= htmlspecialchars($pres['id_prestation']); ?>">
-                                <button type="submit" class="btn btn-danger btnDelete">
-                                    <i class="fa-solid fa-trash-xmark"></i>
-                                </button>
-                            </form>
-                        </td>
-
-                    </tr>
-                <?php endforeach; ?>
-            </table>
-        </div>
+                        </form>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+</div>
 <script src="https://kit.fontawesome.com/ab09c2f170.js" crossorigin="anonymous"></script>
 <script src="../../public/js/GestionCrud.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

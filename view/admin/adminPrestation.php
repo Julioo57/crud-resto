@@ -20,6 +20,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['nomPrestation'])) {
         exit;
     }
 }
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['nomPrestation'])) {
+    $valeurInputPrestation = htmlspecialchars($_POST['nomPrestation']); // Récupérer et sécuriser la valeur
+    $idPrestation = $_POST['idPrestation']; // Assurez-vous que cette variable existe et contient la valeur de l'ID
+
+    if (isset($_GET['action']) && $_GET['action'] === 'updatePrestation') {
+        var_dump($valeurInputPrestation, $idPrestation); // Vérifiez ici aussi
+        $userController->uptPrestation($valeurInputPrestation, $idPrestation);
+        header('Cache-Control: no-cache, no-store, must-revalidate');
+        header('Pragma: no-cache');
+        header('Expires: 0');
+        header('Location: adminPrestation.php');
+        exit;
+    }
+}
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['idPrestation'])) {
     $idPrestation = $_POST['idPrestation'];
@@ -83,6 +97,34 @@ $adminPrestation = $userController->getPrestations(); // Assurez-vous que cette 
     </div>
 </div>
 
+<!-- Modal - Modifier Prestation -->
+<div class="modal fade" id="editPrestationModal" tabindex="-1" aria-labelledby="editPrestationModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editPrestationModalLabel">Modifier la Prestation</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="adminPrestation.php?action=updatePrestation">
+                    <!-- Champ caché pour envoyer l'ID -->
+                    <input type="hidden" name="idPrestation" id="idPrestation">
+
+                    <div class="mb-3">
+                        <label for="editPrestation" class="form-label">Nom de la Prestation</label>
+                        <input type="text" class="form-control" id="editPrestation" name="nomPrestation" required>
+                    </div>
+
+                    <div class="d-flex justify-content-end">
+                        <button type="submit" class="btn btn-warning">Modifier</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <div class=" d-block d-md-flex flex-column flex-md-row align-items-center justify-content-center text-center">
             <h5 class="text-center">table Prestation</h5>
             <table class="m-5 table table-striped w-50 text-center mx-auto">
@@ -97,13 +139,17 @@ $adminPrestation = $userController->getPrestations(); // Assurez-vous que cette 
                         <td><?= htmlspecialchars($pres['id_prestation']); ?></td>
                         <td><?= htmlspecialchars($pres['type_prestation']); ?></td>
                         <td>
-                            <button class="btn btn-primary btnEdit" data-bs-toggle="modal">
+                            <button class="btn btn-primary BtnEdit" 
+                                data-bs-toggle="modal" 
+                                data-bs-target="#editPrestationModal" 
+                                data-id="<?= htmlspecialchars($pres['id_prestation']); ?>" 
+                                data-name="<?= htmlspecialchars($pres['type_prestation']); ?>">
                                 <i class="fa-solid fa-pen-to-square"></i>
                             </button>
                         </td>
                         <td><!-- delete form avec id cache et btn  -->
                             <form method="post" action="adminPrestation.php?action=deletePrestation">
-                            <input type="hidden" name="idPrestation" value="<?= htmlspecialchars($pres['id_prestation']); ?>">
+                            <input type="hidden" id="idPrestation" name="idPrestation" value="<?= htmlspecialchars($pres['id_prestation']); ?>">
                                 <button type="submit" class="btn btn-danger btnDelete">
                                     <i class="fa-solid fa-trash-xmark"></i>
                                 </button>
@@ -115,7 +161,7 @@ $adminPrestation = $userController->getPrestations(); // Assurez-vous que cette 
             </table>
         </div>
 <script src="https://kit.fontawesome.com/ab09c2f170.js" crossorigin="anonymous"></script>
-<script src="../../public/js/main.js"></script>
+<script src="../../public/js/GestionCrud.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

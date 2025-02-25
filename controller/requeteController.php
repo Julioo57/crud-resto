@@ -48,9 +48,31 @@ class requeteController {
         
         // Retourner les résultats sous forme de tableau associatif
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
-
-    public function addCategorie($valeurInputCategorie) { // Accepter la variable en paramètre
+        }
+        public function uptCategorie($valeurInputCategorie, $idCategorie) {
+            $pdo = Database::getConnection();
+        
+            // Préparation de la requête pour mettre à jour une catégorie
+            $query = "UPDATE categorie SET libelle_categorie =? WHERE id_categorie =?";
+        
+            try {
+                // Préparez la requête
+                $stmt = $pdo->prepare($query);
+        
+                // Liez les paramètres à la requête
+                $stmt->execute([$valeurInputCategorie, $idCategorie]);
+        
+                if ($stmt->rowCount() > 0) {
+                    echo "La catégorie a été mise à jour avec succès.";
+                } else {
+                    echo "Aucune modification effectuée. Peut-être que l'ID n'existe pas ou les données sont les mêmes.";
+                }
+            } catch (PDOException $e) {
+                echo "Erreur lors de la mise à jour : " . $e->getMessage();
+            }
+        }
+        
+        public function addCategorie($valeurInputCategorie) { // Accepter la variable en paramètre
         $pdo = Database::getConnection();
       
         // placeholde pour verifier 
@@ -99,7 +121,28 @@ class requeteController {
         // Retourner les résultats sous forme de tableau associatif
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    public function uptPrestation($valeurInputPrestation, $idPrestation) {
+        $pdo = Database::getConnection();
     
+        // Préparation de la requête pour mettre à jour une catégorie
+        $query = "UPDATE prestation SET type_prestation =? WHERE id_prestation =?";
+    
+        try {
+            // Préparez la requête
+            $stmt = $pdo->prepare($query);
+    
+            // Liez les paramètres à la requête
+            $stmt->execute([$valeurInputPrestation, $idPrestation]);
+    
+            if ($stmt->rowCount() > 0) {
+                echo "La catégorie a été mise à jour avec succès.";
+            } else {
+                echo "Aucune modification effectuée. Peut-être que l'ID n'existe pas ou les données sont les mêmes.";
+            }
+        } catch (PDOException $e) {
+            echo "Erreur lors de la mise à jour : " . $e->getMessage();
+        }
+    }
     public function addPrestation($valeurInputPrestation) { // Accepter la variable en paramètre
         $pdo = Database::getConnection();
       

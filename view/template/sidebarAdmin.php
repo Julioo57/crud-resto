@@ -33,13 +33,13 @@ $user = $_SESSION['user'];
         </a>
       </li>
       <li>
-        <a href="droits.php" class="nav-link text-white">
+        <a href="adminDroits.php" class="nav-link text-white">
           <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#grid"></use></svg>
           Droits
         </a>
       </li>
       <li>
-        <a href="users.php" class="nav-link text-white">
+        <a href="adminUsers.php" class="nav-link text-white">
           <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#people-circle"></use></svg>
           Utilisateurs
         </a>

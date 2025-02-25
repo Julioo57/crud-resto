@@ -208,8 +208,118 @@ public function deleteTarif($idPrestation, $idCategorie) {
         // Retourner la première ligne (il doit y en avoir une seule)
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+      // affichange table droits 
+    // gerer tout ce qui est droit 
+    public function getDroits() {
+        // Connexion à la base de données
+        $pdo = Database::getConnection();
+        
+        // Préparation de la requête pour récupérer toutes les catégories
+        $query = "SELECT * FROM droits";
+        $stmt = $pdo->prepare($query);
+        
+        // Exécution de la requête
+        $stmt->execute();
+        
+        // Retourner les résultats sous forme de tableau associatif
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function addDroit($nomDroit) {
+        $pdo = Database::getConnection();
+        $sql = "INSERT INTO droits (libelle_droits) VALUES (:nomDroit)";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute(['nomDroit' => $nomDroit]); // Utilisation correcte d'un tableau
+    }
     
+
+    public function deleteDroit($idDroit) {
+        // Connexion à la base de données
+        $pdo = Database::getConnection();
+        
+        // Préparation de la requête de suppression
+        $query = "DELETE FROM droits WHERE id_droits = ?";
+        $stmt = $pdo->prepare($query);
+        
+        // Exécution de la requête avec l'ID de la catégorie à supprimer
+        $stmt->execute([$idDroit]);
+    }
+     // Méthode pour récupérer une catégorie par son ID
+     public function getDroitById($idDroit) {
+        $pdo = Database::getConnection();
+        $query = "SELECT * FROM categorie WHERE id_droits = ?";
+        $stmt = $pdo->prepare($query);
+        $stmt->execute([$idDroit]);
+        
+        // Retourner la première ligne (il doit y en avoir une seule)
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+    public function getUsers() {
+        // Connexion à la base de données
+        $pdo = Database::getConnection();
+        
+        // Préparation de la requête pour récupérer toutes les catégories
+        $query = "SELECT * FROM users";
+        $stmt = $pdo->prepare($query);
+        
+        // Exécution de la requête
+        $stmt->execute();
+        
+        // Retourner les résultats sous forme de tableau associatif
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+// foncrion pourn users 
+    public function addUsers($inputUsersNom , $inputUsersPrenom, $inputUsersDroits, $inputUsersMail, $inputUsersMdp, $inputUsersAvatar) {
+        // Connexion à la base de données
+        $pdo = Database::getConnection();
     
+        // Vérifier si l'email existe déjà dans la base de données
+        $checkSql = "SELECT id_users FROM users WHERE mail = :email";
+        $checkStmt = $pdo->prepare($checkSql);
+        $checkStmt->bindParam(':email', $inputUsersMail, PDO::PARAM_STR);
+        $checkStmt->execute();
+
+        if ($checkStmt->fetch()) {
+            echo "Cet email est déjà utilisé.";
+            return;
+        }
+        $hashedPassword = password_hash($inputUsersMdp, PASSWORD_DEFAULT);
+        // Insertion de l'utilisateur dans la base de données
+        $sql = "INSERT INTO users (nom, prenom, mail, password, droits, avatar) 
+                VALUES (:nom, :prenom, :email, :password, :droits, :avatar)";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':nom', $inputUsersNom, PDO::PARAM_STR);
+        $stmt->bindParam(':prenom', $inputUsersPrenom, PDO::PARAM_STR);
+        $stmt->bindParam(':email', $inputUsersMail, PDO::PARAM_STR);
+        $stmt->bindParam(':password', $hashedPassword, PDO::PARAM_STR);
+        $stmt->bindParam(':droits', $inputUsersDroits, PDO::PARAM_STR);
+        $stmt->bindParam(':avatar', $inputUsersAvatar, PDO::PARAM_STR);
+
+        $stmt->execute();
+
+    }
+    public function deleteUsers($idUsers) {
+        // Connexion à la base de données
+        $pdo = Database::getConnection();
+        
+        // Préparation de la requête de suppression
+        $query = "DELETE FROM users WHERE id_users = ?";
+        $stmt = $pdo->prepare($query);
+        
+        // Exécution de la requête avec l'ID de la catégorie à supprimer
+        $stmt->execute([$idUsers]);
+    }
+     // Méthode pour récupérer une catégorie par son ID
+     public function getUsersById($idUsers) {
+        $pdo = Database::getConnection();
+        $query = "SELECT * FROM users WHERE id_users = ?";
+        $stmt = $pdo->prepare($query);
+        $stmt->execute([$idUsers]);
+        
+        // Retourner la première ligne (il doit y en avoir une seule)
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 }
 
 ?> 

@@ -68,5 +68,25 @@ document.addEventListener('DOMContentLoaded', function () {
                 modal.show();
             });
         });
+                const btnsEdit = document.querySelectorAll('.BtnEditTarif');
+            
+                btnsEdit.forEach(function(btn) {
+                    btn.addEventListener('click', function() {
+                        // Récupérer les valeurs des attributs data
+                        const idPrestation = this.getAttribute("data-id-prestation");
+                        const idCategorie = this.getAttribute("data-id-categorie");
+                        const prix = this.getAttribute("data-prix");
+            
+                        // Assurez-vous que idPrestation est bien défini
+                        console.log(idPrestation);
+                        console.log(idCategorie);
+                        console.log(prix)  // Ajoutez un log pour vérifier
+            
+                        // Par exemple, vous pouvez assigner ces valeurs à des champs de formulaire dans le modal
+                        document.getElementById('idTarifPrestation').value = idPrestation;
+                        document.getElementById('idTarifCategorie').value = idCategorie;
+                        document.getElementById('editTarif').value = prix;
+                    });
+                });
 });
 

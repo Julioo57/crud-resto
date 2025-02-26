@@ -195,34 +195,69 @@ class requeteController {
 
 
     // Fonction pour mettre à jour un tarif
-    public function updateTarif($idPrestation, $idCategorie, $nomTarif) {
+    public function updateTarif($idPrestation, $idCategorie, $prixTarif) {
         // Connexion à la base de données
         $pdo = Database::getConnection();   
         // Préparer la requête SQL pour mettre à jour le tarif
-        $query = "UPDATE tarif SET prix = :nomTarif WHERE id_prestation = :idPrestation,id_categorie = :idCategorie";
-        
-        // Exécuter la requête préparée
+        $query = "UPDATE tarif SET prix = :prixTarif WHERE id_prestation = :idPrestation AND id_categorie = :idCategorie";
+    
+        // requete upt tarif 
         $stmt = $pdo->prepare($query);
         $stmt->bindParam(':idPrestation', $idPrestation);
         $stmt->bindParam(':idCategorie', $idCategorie);
-        $stmt->bindParam(':nomTarif', $nomTarif);
-
+        $stmt->bindParam(':prixTarif', $prixTarif);
+        
         // Exécuter la mise à jour
         $stmt->execute();
     }
-
-function addTarif($idPrestation, $idCategorie, $idTarif) {
-    $pdo = Database::getConnection();   
-    // Requête pour insérer les valeurs dans la table tarif
-    $query = "INSERT INTO tarif (id_prestation, id_categorie, prix) VALUES (?, ?, ?)";
-    $stmt = $pdo->prepare($query);
-
-    // Exécution de la requête
-    $stmt->execute([$idPrestation, $idCategorie, $idTarif]);
-
-    header('Location: adminTarif.php');
-    exit();
-}
+    
+    
+    function addTarif($idPrestation, $idCategorie, $prixTarif) {
+        $pdo = Database::getConnection();
+    
+        // on check si id cate existe 
+        $sqlCategorieCheck = "SELECT id_categorie FROM categorie WHERE id_categorie = :idCategorie";
+        $stmtCategorieCheck = $pdo->prepare($sqlCategorieCheck);
+        $stmtCategorieCheck->bindParam(':idCategorie', $idCategorie);
+        $stmtCategorieCheck->execute();
+        
+        // Si l'id cate existe aps on créer 
+        if ($stmtCategorieCheck->rowCount() == 0) {
+            $sqlCategorieInsert = "INSERT INTO categorie (id_categorie) VALUES (:idCategorie)";
+            $stmtCategorieInsert = $pdo->prepare($sqlCategorieInsert);
+            $stmtCategorieInsert->bindParam(':idCategorie', $idCategorie);
+            $stmtCategorieInsert->execute();
+        }
+        
+        // on check si id prestation existe 
+        $sqlPrestationCheck = "SELECT id_prestation FROM prestation WHERE id_prestation = :idPrestation";
+        $stmtPrestationCheck = $pdo->prepare($sqlPrestationCheck);
+        $stmtPrestationCheck->bindParam(':idPrestation', $idPrestation);
+        $stmtPrestationCheck->execute();
+        
+        // Si la prestation n'existe pas on créer 
+        if ($stmtPrestationCheck->rowCount() == 0) {
+            $sqlPrestationInsert = "INSERT INTO prestation (id_prestation) VALUES (:idPrestation)";
+            $stmtPrestationInsert = $pdo->prepare($sqlPrestationInsert);
+            $stmtPrestationInsert->bindParam(':idPrestation', $idPrestation);
+            $stmtPrestationInsert->execute();
+        }
+    
+        // Insérer dans la table tarif
+        $sqlTarif = "INSERT INTO tarif (id_prestation, id_categorie, prix) VALUES (:idPrestation, :idCategorie, :prix)";
+        $stmtTarif = $pdo->prepare($sqlTarif);
+        $stmtTarif->bindParam(':idPrestation', $idPrestation);
+        $stmtTarif->bindParam(':idCategorie', $idCategorie);
+        $stmtTarif->bindParam(':prix', $prixTarif);
+        
+        // Exécuter la requête pour insérer dans la table tarif
+        $stmtTarif->execute();
+    
+        // Rediriger vers la page adminTarif.php après l'exécution des requêtes
+        header('Location: adminTarif.php');
+        exit();
+    }
+    
 
 
 public function deleteTarif($idPrestation, $idCategorie) {

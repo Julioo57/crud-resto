@@ -3,8 +3,8 @@ require_once '../../controller/userController.php';
 require_once '../../controller/requeteController.php';
 $userController = new UserController();
 $userController->checkLogin(); // Vérification si l'utilisateur est connecté 
+//apple ca des le debut 
 
-// Appeler la fonction page_admin() et récupérer les données
 $ins = page_admin1(); 
 $usr = page_admin2();
 $avg = page_admin3();

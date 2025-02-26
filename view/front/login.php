@@ -11,7 +11,7 @@
 <section class="gradient-custom vh-100 p-5">
     <div class="container py-2 h-100 w-25">
       <div class="justify-content-center align-items-center">
-          <div class="card shadow-2-strong" style="border-radius: 15px;">
+          <div class="card shadow-2-strong shadow" style="border-radius: 15px;">
             <div class="card-body p-4 p-md-4">
               <h3 class="text-center">Formulaire de Connexion*</h3>
               <p class="text-center">*Veuillez noté qu'il est obliger d'être Inscrit ou Connecté pour poursuivre.</p>  

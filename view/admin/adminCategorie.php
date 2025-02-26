@@ -1,66 +1,24 @@
 <?php 
-require_once __DIR__ . '/../../controller/requeteController.php';
+require_once (__DIR__ . '/../../controller/requeteController.php');
+require_once(__DIR__ . '../../../router/backRouteur.php');
 
 // Crée une instance du contrôleur
 $userController = new requeteController();
 
-// Récupérer toutes les catégories depuis la base de données
+//affciher la table par defaut 
 $adminCategorie = $userController->getCategories(); // Assurez-vous que cette méthode existe dans votre contrôleur
-
-// Vérifie si le formulaire a été soumis
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['nomCategorie'])) {
-    $valeurInputCategorie = htmlspecialchars($_POST['nomCategorie']); // Récupérer et sécuriser la valeur
-
-    // Vérifier si l'action est "addCategorie"
-    if (isset($_GET['action']) && $_GET['action'] === 'addCategorie') {
-        // Appeler la méthode pour ajouter la catégorie
-        $userController->addCategorie($valeurInputCategorie);
-        
-        // Rediriger après ajout pour éviter le double envoi de formulaire
-        header('Location: adminCategorie.php');
-        exit;
-    }
-}
-
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['nomCategorie'])) {
-    $valeurInputCategorie = htmlspecialchars($_POST['nomCategorie']); // Récupérer et sécuriser la valeur
-    $idCategorie = $_POST['idCategorie']; // Assurez-vous que cette variable existe et contient la valeur de l'ID
-
-    if (isset($_GET['action']) && $_GET['action'] === 'updateCategorie') {
-        var_dump($valeurInputCategorie, $idCategorie); // Vérifiez ici aussi
-        $userController->uptCategorie($valeurInputCategorie, $idCategorie);
-        header('Cache-Control: no-cache, no-store, must-revalidate');
-        header('Pragma: no-cache');
-        header('Expires: 0');
-        header('Location: adminCategorie.php');
-        exit;
-    }
-}
-
-
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['idCategorie'])) {
-    $idCategorie = $_POST['idCategorie'];
-    
-    if (isset($_GET['action']) && $_GET['action'] === 'deleteCategorie') {
-        // Appeler la méthode pour supprimer la catégorie
-        $userController->deleteCategorie($idCategorie);
-        
-        // Rediriger après suppression pour éviter le double envoi de formulaire
-        header('Location: adminCategorie.php');
-        exit;
-    }
-}
 ?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestion des catégories</title>
+    <title>Catégorie | Gestion</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
 <body>
     <div class="container my-5">
+        <!-- container top btn retour & add  -->
         <div class="d-flex justify-content-between align-items-center mb-4">
             <a href="../admin/admin.php" class="btn btn-danger">Retour</a>
             <h1 class="text-center">Gestion des catégories</h1>
@@ -69,7 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['idCategorie'])) {
             </button>
         </div>
 
-        <!-- Modal - Ajouter Catégorie -->
+        <!-- Modal Ajouter Catégorie -->
         <div class="modal fade" id="addCategoryModal" tabindex="-1" aria-labelledby="addCategoryModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
@@ -92,7 +50,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['idCategorie'])) {
             </div>
         </div>
 
-        <!-- Modal - Modifier Catégorie -->
+        <!-- Modal Modifier Catégorie -->
         <div class="modal fade" id="editCategorieModal" tabindex="-1" aria-labelledby="editCategorieModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">

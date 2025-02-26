@@ -1,64 +1,25 @@
 <?php 
-require_once __DIR__ . '/../../controller/requeteController.php';
+require_once (__DIR__ . '/../../controller/requeteController.php');
+require_once(__DIR__ . '../../../router/backRouteur.php');
 
 // Crée une instance du contrôleur
 $userController = new requeteController();
 
-// Récupérer toutes les catégories depuis la base de données
-$adminDroit = $userController->getDroits(); // Assurez-vous que cette méthode existe dans votre contrôleur  
-
-// Vérifie si le formulaire a été soumis
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['nomDroit'])) {
-    $valeurInputDroit = htmlspecialchars($_POST['nomDroit']); // Récupérer et sécuriser la valeur
-
-    // Vérifier si l'action est "addDroit"
-    if (isset($_GET['action']) && $_GET['action'] === 'addDroit') {
-        // Appeler la méthode pour ajouter la catégorie
-        $userController->addDroit($valeurInputDroit);
-        
-        // Rediriger après ajout pour éviter le double envoi de formulaire
-        header('Location: adminDroits.php');
-        exit;
-    }
-}
-
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['nomDroits'])) {
-    $valeurInputDroits = htmlspecialchars($_POST['nomDroits']); // Récupérer et sécuriser la valeur
-    $idDroits = $_POST['idDroits']; // Assurez-vous que cette variable existe et contient la valeur de l'ID
-
-    if (isset($_GET['action']) && $_GET['action'] === 'updateDroits') {
-        $userController->uptDroits($valeurInputDroits, $idDroits);
-        header('Location: adminDroits.php');
-        exit;
-    }
-}
-
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['idDroit'])) {
-    $idDroit = $_POST['idDroit'];
-    
-    if (isset($_GET['action']) && $_GET['action'] === 'deleteDroit') {
-        // Appeler la méthode pour supprimer la catégorie
-        $userController->deleteDroit($idDroit);
-        
-        // Rediriger après suppression pour éviter le double envoi de formulaire
-        header('Location: adminDroits.php');
-        exit;
-    }
-}
+//affciher la table par defaut 
+$adminDroit = $userController->getDroits();
 ?>
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Droits | CRUD</title>
+    <title>Droits | Gestion</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://kit.fontawesome.com/ab09c2f170.css" rel="stylesheet">
 </head>
 <body>
 
-<!-- Header Section -->
+<!-- container top afficher btn retour & add  -->
 <div class="container my-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <a href="../admin/admin.php" class="btn btn-danger">Retour</a>
@@ -68,7 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['idDroit'])) {
         </button>
     </div>
 
-    <!-- Modal for Adding Droit -->
+    <!-- Modal add Droit -->
     <div class="modal fade" id="addDroitModal" tabindex="-1" aria-labelledby="addDroitModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -91,7 +52,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['idDroit'])) {
         </div>
     </div>
 
-    <!-- Modal for Editing Droit -->
+    <!-- Modal edit Droit -->
     <div class="modal fade" id="editDroitModal" tabindex="-1" aria-labelledby="editDroitModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -115,7 +76,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['idDroit'])) {
         </div>
     </div>
 
-    <!-- Table for Managing Droit -->
+    <!-- Table de Droit -->
     <h5 class="text-center">Table des Droits</h5>
     <table class="table table-striped text-center">
         <thead>
@@ -132,6 +93,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['idDroit'])) {
                     <td><?= htmlspecialchars($drt['id_droits']); ?></td>
                     <td><?= htmlspecialchars($drt['libelle_droits']); ?></td>
                     <td>
+                        <!--   btn pour acceder a l'edit du modla  -->
                         <button class="btn btn-primary BtnEdit" 
                                 data-bs-toggle="modal" 
                                 data-bs-target="#editDroitModal" 
@@ -141,6 +103,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['idDroit'])) {
                         </button>
                     </td>
                     <td>
+                        <!-- form pour delete  -->
                         <form method="post" action="adminDroits.php?action=deleteDroit">
                             <input type="hidden" name="idDroit" value="<?= htmlspecialchars($drt['id_droits']); ?>">
                             <button type="submit" class="btn btn-danger">

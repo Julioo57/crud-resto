@@ -1,69 +1,25 @@
 <?php 
-require_once __DIR__ . '/../../controller/requeteController.php';
+require_once (__DIR__ . '/../../controller/requeteController.php');
+require_once(__DIR__ . '../../../router/backRouteur.php');
+
 // Crée une instance du contrôleur
 $userController = new requeteController();
 
-// Récupérer toutes les prestations depuis la base de données
+//affciher la table par defaut 
 $adminPrestation = $userController->getPrestations(); // Assurez-vous que cette méthode existe dans votre contrôleur
-
-// Vérifie si le formulaire a été soumis
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['nomPrestation'])) {
-    $valeurInputPrestation = htmlspecialchars($_POST['nomPrestation']); // Récupérer et sécuriser la valeur
-
-    // Vérifier si l'action est "addPrestation"
-    if (isset($_GET['action']) && $_GET['action'] === 'addPrestation') {
-        // Appeler la méthode pour ajouter la prestation
-        $userController->addPrestation($valeurInputPrestation);
-        
-        // Rediriger après ajout pour éviter le double envoi de formulaire
-        header('Location: adminPrestation.php');
-        exit;
-    }
-}
-
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['nomPrestation'])) {
-    $valeurInputPrestation = htmlspecialchars($_POST['nomPrestation']); // Récupérer et sécuriser la valeur
-    $idPrestation = $_POST['idPrestation']; // Assurez-vous que cette variable existe et contient la valeur de l'ID
-
-    if (isset($_GET['action']) && $_GET['action'] === 'updatePrestation') {
-        $userController->uptPrestation($valeurInputPrestation, $idPrestation);
-        header('Location: adminPrestation.php');
-        exit;
-    }
-}
-
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['idPrestation'])) {
-    $idPrestation = $_POST['idPrestation'];
-    
-    if (isset($_GET['action']) && $_GET['action'] === 'deletePrestation') {
-        // Appeler la méthode pour supprimer la prestation
-        $userController->deletePrestation($idPrestation);
-        
-        // Rediriger après suppression pour éviter le double envoi de formulaire
-        header('Location: adminPrestation.php');
-        exit;
-    }
-}
-
-// Crée une instance du contrôleur
-$userController = new requeteController();
-
-// Récupérer toutes les prestations depuis la base de données
-$adminPrestation = $userController->getPrestations(); 
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestion des Prestations</title>
+    <title>Prestation | Gestion</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://kit.fontawesome.com/ab09c2f170.css" rel="stylesheet">
 </head>
 <body>
 
-<!-- Header -->
+<!-- containre top btn retour & add  -->
 <div class="container my-5">
 <div class="d-flex justify-content-between align-items-center mb-4">
             <a href="../admin/admin.php" class="btn btn-danger">Retour</a>
@@ -138,6 +94,7 @@ $adminPrestation = $userController->getPrestations();
                     <td><?= htmlspecialchars($pres['id_prestation']); ?></td>
                     <td><?= htmlspecialchars($pres['type_prestation']); ?></td>
                     <td>
+                        <!--  btn pour modal  -->
                         <button class="btn btn-primary BtnEdit" 
                             data-bs-toggle="modal" 
                             data-bs-target="#editPrestationModal" 
@@ -147,6 +104,7 @@ $adminPrestation = $userController->getPrestations();
                         </button>
                     </td>
                     <td>
+                        <!-- form de delete -->
                         <form method="post" action="adminPrestation.php?action=deletePrestation">
                             <input type="hidden" name="idPrestation" value="<?= htmlspecialchars($pres['id_prestation']); ?>">
                             <button type="submit" class="btn btn-danger">

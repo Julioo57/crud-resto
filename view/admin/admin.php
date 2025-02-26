@@ -6,6 +6,7 @@ $userController->checkLogin(); // Vérif si la user esr co
 // Récupérer les info de l'user 
 $user = $_SESSION['user'];
 ?>
+<!-- page main cote back -->
 <!DOCTYPE html>
 <html lang="fr">
 <head>

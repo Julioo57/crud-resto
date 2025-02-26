@@ -1,72 +1,25 @@
 <?php 
-require_once __DIR__ . '/../../controller/requeteController.php';
+require_once (__DIR__ . '/../../controller/requeteController.php');
+require_once(__DIR__ . '../../../router/backRouteur.php');
 
-// Crée une instance du controller requete
+// Crée une instance du contrôleur
 $userController = new requeteController();
 
-// Récupérer toutes les catégories depuis la base de données
+//affciher la table par defaut 
 $adminTarif = $userController->getTarif(); 
-
-// Vérifie si le formulaire a été soumis
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_GET['action']) && $_GET['action'] == 'addTarif') {
-    // Récupérer les valeurs envoyées par le formulaire
-    $idPrestation = isset($_POST['idPrestationAdd']) ? $_POST['idPrestationAdd'] : null;
-    $idCategorie = isset($_POST['idCategorieCat']) ? $_POST['idCategorieCat'] : null;
-    $prixTarif = isset($_POST['addTarif']) ? $_POST['addTarif'] : null;
-    echo" ($idPrestation,$idCategorie ,$prixTarif)";
-    // Verif si toutes les valeurs sont présentes
-    if ($idPrestation && $idCategorie && $prixTarif) {
-        // Fonction avec arguments 
-        $userController->addTarif($idPrestation, $idCategorie, $prixTarif);
-    } else {
-        // Si une des valeurs manque, afficher un message d'erreur
-    }
-}
-
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_GET['action']) && $_GET['action'] == 'deleteTarif') {
-    // Récupérer les valeurs envoyées par le formulaire
-    $idPrestation = isset($_POST['idPrestation']) ? $_POST['idPrestation'] : null;
-    $idCategorie = isset($_POST['idCategorie']) ? $_POST['idCategorie'] : null;
-
-    // Vérifier si les valeurs sont présentes
-    if ($idPrestation && $idCategorie) {
-        // Appeler la fonction pour supprimer le tarif
-        $userController->deleteTarif($idPrestation, $idCategorie);
-    } else {
-        // Si une des valeurs manque, afficher un message d'erreur
-        header('Location: adminTarif.php');
-        exit();
-    }
-}
-
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_GET['action']) && $_GET['action'] == 'updateTarif') {
-    // Récupérer les valeurs envoyées par le formulaire
-    $idPrestation = isset($_POST['idTarif']) ? $_POST['idTarif'] : null;
-    $idCategorie = isset($_POST['idCategorie']) ? $_POST['idCategorie'] : null;
-    $prixTarif = isset($_POST['editTarif']) ? $_POST['editTarif'] : null;
-
-    // Vérifier si toutes les valeurs sont présentes
-    if ($idPrestation && $idCategorie && $prixTarif) {
-        // Appeler la fonction pour mettre à jour le tarif
-        $userController->updateTarif($idPrestation, $idCategorie, $prixTarif);
-    } 
-    header('Location: adminTarif.php');
-    exit();
-}
 ?>
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tarif | CRUD</title>
+    <title>Tarif | Gestion</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://kit.fontawesome.com/ab09c2f170.css" rel="stylesheet">
 </head>
 <body>
 
-<!-- Header Section -->
+<!-- container top  btn add & retour -->
 <div class="container my-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <a href="../admin/admin.php" class="btn btn-danger">Retour</a>
@@ -132,7 +85,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_GET['action']) && $_GET['act
         </div>
     </div>
 
-    <!-- Table for Managing Tarifs -->
+    <!-- Table Tarif -->
     <h5 class="text-center">Table des Tarifs</h5>
     <table class="table table-striped text-center">
         <thead>
@@ -151,6 +104,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_GET['action']) && $_GET['act
                     <td><?= htmlspecialchars($tar['id_categorie']); ?></td>
                     <td><?= htmlspecialchars($tar['prix']); ?></td>
                     <td>
+                        <!-- btn pour edit vers modal  -->
                         <button class="btn btn-primary BtnEditTarif" 
                                 data-bs-toggle="modal" 
                                 data-bs-target="#editTarifModal" 
@@ -161,6 +115,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_GET['action']) && $_GET['act
                         </button>
                     </td>
                     <td>
+                        <!-- form pour delete -->
                         <form method="post" action="adminTarif.php?action=deleteTarif">
                             <input type="hidden" name="idPrestation" value="<?= htmlspecialchars($tar['id_prestation']); ?>">
                             <input type="hidden" name="idCategorie" value="<?= htmlspecialchars($tar['id_categorie']); ?>">

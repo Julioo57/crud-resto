@@ -1,11 +1,11 @@
 <?php 
-require_once __DIR__ . '/../../controller/requeteController.php';
+require_once (__DIR__ . '/../../controller/requeteController.php');
 require_once(__DIR__ . '../../../router/backRouteur.php');
 
 // Crée une instance du contrôleur
 $userController = new requeteController();
 
-//affiche les users
+//affciher la table par defaut 
 $adminUsers = $userController->getUsers();
 ?>
 <!DOCTYPE html>
@@ -13,16 +13,16 @@ $adminUsers = $userController->getUsers();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestion des Utilisateurs</title>
+    <title>Tarif | Gestion</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://kit.fontawesome.com/ab09c2f170.css" rel="stylesheet">
 </head>
 <body>
-
+<!--  container top btn add & retour -->
 <div class="container my-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <a href="../admin/admin.php" class="btn btn-danger">Retour</a>
-        <h1 class="text-center">Gestion des Utilisateurs</h1>
+    <a href="../admin/admin.php" class="btn btn-danger">Retour</a>
+    <h1 class="text-center">Gestion des Utilisateurs</h1>
         <a href="../front/register.php"class="btn btn-outline-success">
                 Ajouter un utilisateur
         </a>
@@ -53,6 +53,7 @@ $adminUsers = $userController->getUsers();
                         <td><?= htmlspecialchars($usr['avatar']); ?></td>
                         <td><?= htmlspecialchars($usr['droits']); ?></td>
                         <td>
+                            <!-- btn edit vers mdoal  -->
                             <button class="btn btn-primary BtnEdit" 
                                 data-bs-toggle="modal" 
                                 data-bs-target="#editUserModal" 
@@ -66,6 +67,7 @@ $adminUsers = $userController->getUsers();
                             </button>
                         </td>
                         <td>
+                            <!--  form pour delete l'users -->
                             <form method="post" action="adminUsers.php?action=deleteUsers">
                                 <input type="hidden" name="id_users" value="<?= htmlspecialchars($usr['id_users']); ?>">
                                 <button type="submit" class="btn btn-danger">

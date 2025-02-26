@@ -5,6 +5,7 @@ require_once '../../controller/requeteController.php';
 <h2 class="text-center pt-3">Tarif Par Categories</h2>
 <div class="d-flex justify-content-end p-3">
     <div class="btn-group">
+        <!-- btn pour selectionné une cate  -->
         <button class="btn btn-primary btn-lg" type="button">
             Selectionner votre categorie
         </button>
@@ -19,6 +20,7 @@ require_once '../../controller/requeteController.php';
         </ul>
     </div>
 </div>
+<!-- container pour afficher la tbale tarif  -->
     <div class="container">
         <div class="d-block TarifPetitRevenue">
             <h5 class="text-center">Tarif pour les utilisateurs à Petits revenus.</h5>

@@ -1,6 +1,7 @@
 <?php 
 require_once '../../controller/requeteController.php';
 ?> 
+<!--  afficher la tbale prestation dans la landing  -->
 <div class="container">
         <div class="d-block TarifPetitRevenue">
         <h2 class="text-center pt-3">Tarif Par Prestations</h2>

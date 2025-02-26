@@ -2,9 +2,9 @@
 require_once '../../controller/userController.php';
 
 $userController = new UserController();
-$userController->checkLogin(); // Vérifie la connexion de l'utilisateur
+$userController->checkLogin(); // Vérifie i user est co 
 
-// Récupérer les informations utilisateur depuis la session
+// Récupérer les info grace a session 
 $user = $_SESSION['user'];
 ?>
 <header class="p-3 p  b-3 border-bottom bg-white">

@@ -28,7 +28,7 @@ function route($action) {
             include 'view/front/register.php';
             break;
         default:
-            include 'view/404.php'; // si page pas find 
+            include '404.php'; // si page pas find 
             break;
     }
 }

@@ -88,5 +88,6 @@ document.addEventListener('DOMContentLoaded', function () {
                         document.getElementById('editTarif').value = prix;
                     });
                 });
+                
 });
 

@@ -1,5 +1,7 @@
 <?php 
 require_once __DIR__ . '/../model/Bdd.php';
+require_once __DIR__ . '../../router/backRouteur.php';
+
 $pdo = Database::getConnection();
 // Requête poru recupe les categrories egal a 1 
 $sql = "SELECT t.prix, p.type_prestation FROM `tarif` AS t NATURAL JOIN prestation AS p NATURAL JOIN categorie AS c WHERE c.id_categorie = 1;";

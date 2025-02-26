@@ -69,7 +69,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_GET['action']) && $_GET['act
 <!-- Header Section -->
 <div class="container my-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <a href="../admin/admin.php" class="btn btn-primary">Retour</a>
+        <a href="../admin/admin.php" class="btn btn-danger">Retour</a>
         <h1 class="text-center">Gestion des Tarifs</h1>
         <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#addTarifModal">
             Ajouter un Tarif

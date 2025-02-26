@@ -4,7 +4,7 @@ require_once '../../controller/userController.php';
 $userController = new UserController();
 $userController->checkLogin(); // Vérifie la connexion de l'utilisateur
 
-// Récupérer les informations utilisateur depuis la session
+// Récupérer les info
 $user = $_SESSION['user'];
 ?>
 <div class="sideBar d-none flex-column flex-shrink-0 p-3 text-bg-dark vh-100 fixed position-absolute top-0 start-0" style="width: 280px; z-index:1000;">

@@ -29,6 +29,51 @@ $stmt = $pdo->prepare($sql);
 $stmt->execute();
 $prestations = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+// page admin 
+// Fonction modifiée pour renvoyer les données de la requête
+function page_admin1(){
+    $pdo = Database::getConnection();
+    $query = "SELECT COUNT(*) AS nombre_users FROM users";
+    $stmt = $pdo->prepare($query);
+    $stmt->execute();
+    
+    //prend le resulatt & verif 
+    $ins = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    if ($ins === false) {
+        $ins = ['nombre_users' => 0];
+    }
+    return $ins;
+}
+function page_admin2(){
+    $pdo = Database::getConnection();
+    $query = "SELECT COUNT(*) AS nombre_usager FROM usager";
+    $stmt = $pdo->prepare($query);
+    $stmt->execute();
+    
+    //prend le resulatt & verif 
+    $usr = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    if ($usr === false) {
+        $usr = ['nombre_usager' => 0];
+    }
+    return $usr;
+}
+function page_admin3(){
+    $pdo = Database::getConnection();
+    $query = "SELECT round(AVG(montant)) AS moyenne_depot FROM depot ";
+    $stmt = $pdo->prepare($query);
+    $stmt->execute();
+    
+    //prend le resulatt & verif 
+    $avg = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    if ($avg === false) {
+        $avg = ['nombre_usager' => 0];
+    }
+    return $avg;
+}
+// Requête pour compter le nombre d'utilisateurs
 
 // requete pour la aprtie back 
 // Requête poru afficher presta

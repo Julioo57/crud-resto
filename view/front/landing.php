@@ -29,6 +29,7 @@ $user = $_SESSION['user'];
 <section id="Prestations">
 <?php require_once  '../front/prestations.php'; ?>
 </section>
+<?php require_once  '../template/footer.php'; ?>
 <script type="text/javascript" src="../../public/js/main.js"></script>
 <!-- Bootstrap Bundle JS (inclut Popper.js) -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

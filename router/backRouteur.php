@@ -2,8 +2,6 @@
 require_once(__DIR__ . '/../controller/requeteController.php');
 // gère la partie back du site. 
 //main 
-session_start();
-
 // Fonction pour vérifier si l'utilisateur est connecté
 function isUserLoggedIn() {
     return isset($_SESSION['user_id']);

@@ -370,28 +370,34 @@ public function deleteTarif($idPrestation, $idCategorie) {
     }
 
 // foncrion pourn users 
-public function uptUsers($inputUsersNom, $inputUsersPrenom,$inputUsersMail,$inputUsersMdp,$inputUsersDroits) {
+public function uptUsers($idUsers, $inputUsersNom, $inputUsersPrenom, $inputUsersMail, $inputUsersDroits) {
     $pdo = Database::getConnection();
-
-    // Préparation de la requête pour mettre à jour une catégori
-    $query = "UPDATE users SET nom ='?', prenom ='?', mail ='?', password ='?', droits ='?' WHERE id_users ='?'";
-
+    
+    // Préparation de la requête SQL pour mettre à jour un utilisateur
+    $query = "UPDATE users SET nom = :nom, prenom = :prenom, mail = :mail, droits = :droits WHERE id_users = :id";
+    
     try {
-        // Préparez la requête
-        $stmt = $pdo->prepare($query);
+        // Préparer la requête
+        $stmtUsers = $pdo->prepare($query);
 
-        // Liez les paramètres à la requête
-        $stmt->execute([$inputUsersNom, $inputUsersPrenom,$inputUsersMail,$inputUsersMdp,$inputUsersDroits]);
+        // Lier les paramètres
+        $stmtUsers->bindParam(':nom', $inputUsersNom);
+        $stmtUsers->bindParam(':prenom', $inputUsersPrenom);
+        $stmtUsers->bindParam(':mail', $inputUsersMail);
+        $stmtUsers->bindParam(':droits', $inputUsersDroits);
+        $stmtUsers->bindParam(':id', $idUsers); // Lier correctement l'ID de l'utilisateur
 
-        if ($stmt->rowCount() > 0) {
-            echo "La catégorie a été mise à jour avec succès.";
-        } else {
-            echo "Aucune modification effectuée. Peut-être que l'ID n'existe pas ou les données sont les mêmes.";
-        }
+        // Exécuter la requête
+        $stmtUsers->execute();
+    
+        // Rediriger vers la page adminUsers.php après la mise à jour
+        header('Location: adminUsers.php');
+        exit();
     } catch (PDOException $e) {
         echo "Erreur lors de la mise à jour : " . $e->getMessage();
     }
 }
+
     public function deleteUsers($idUsers) {
         // Connexion à la base de données
         $pdo = Database::getConnection();

@@ -8,29 +8,26 @@ $userController = new requeteController();
 $adminUsers = $userController->getUsers();
 
 // Vérifie si le formulaire a été soumis
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['nomUsers'])) {
-    $inputUsersNom = htmlspecialchars($_POST['nomUsers']); // Récupérer et sécuriser la valeur
-    $inputUsersPrenom = htmlspecialchars($_POST['prenomUsers']); // Récupérer et sécuriser la valeur
-    $inputUsersMail = htmlspecialchars($_POST['mailUsers']); // Récupérer et sécuriser la valeur
-    $inputUsersMdp = htmlspecialchars($_POST['passwordUsers']); // Récupérer et sécuriser la valeur
-    $inputUsersDroits = htmlspecialchars($_POST['droitsUsers']); // Récupérer et sécuriser la valeur
-    $inputUsersAvatar = htmlspecialchars($_POST['avatarUsers']); // Récupérer et sécuriser la valeur
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['editNom'])&& isset($_POST['editPrenom'])&& isset($_POST['editEmail'])&& isset($_POST['editDroits'])) {
+    $inputUsersNom = htmlspecialchars($_POST['editNom']); // Récupérer et sécuriser la valeur
+    $inputUsersPrenom = htmlspecialchars($_POST['editPrenom']); // Récupérer et sécuriser la valeur
+    $inputUsersMail = htmlspecialchars($_POST['editEmail']); // Récupérer et sécuriser la valeur
+    $inputUsersDroits = htmlspecialchars($_POST['editDroits']); // Récupérer et sécuriser la valeur
 
-
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['nomUsers'])) {
-    $valeurInputUsers = htmlspecialchars($_POST['nomUsers']); // Récupérer et sécuriser la valeur
-    $idUsers = $_POST['idUsers']; // Assurez-vous que cette variable existe et contient la valeur de l'ID
-
+    
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['editNom'])) {
+    $valeurInputUsers = htmlspecialchars($_POST['editNom']); // Récupérer et sécuriser la valeur
+    $idUsers = $_POST['id_users']; // Assurez-vous que cette variable existe et contient la valeur de l'ID
     if (isset($_GET['action']) && $_GET['action'] === 'updateUsers') {
-        $userController->uptUsers($inputUsersNom, $inputUsersPrenom,$inputUsersMail,$inputUsersMdp,$inputUsersDroits,$inputUsersAvatar);
+        $userController->uptUsers($idUsers,$inputUsersNom, $inputUsersPrenom,$inputUsersMail,$inputUsersDroits);
         header('Location: adminUsers.php');
         exit;
     }
 }
 }
 
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['idUsers'])) {
-    $idUsers = $_POST['idUsers'];
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id_users'])) {
+    $idUsers = $_POST['id_users'];
     
     if (isset($_GET['action']) && $_GET['action'] === 'deleteUsers') {
         // Appeler la méthode pour supprimer la catégorie
@@ -70,7 +67,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['idUsers'])) {
                 const userDroits = button.getAttribute('data-droits');
 
                 // Insérer ces valeurs dans le modal
-                document.getElementById('idUser').value = userId;
+                document.getElementById('id_users').value = userId;
                 document.getElementById('editNom').value = userNom;
                 document.getElementById('editPrenom').value = userPrenom;
                 document.getElementById('editEmail').value = userEmail;
@@ -98,28 +95,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['idUsers'])) {
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form method="post" action="adminUsers.php?action=updateUser" enctype="multipart/form-data">
-                    <!-- ID de l'utilisateur (caché) -->
-                    <input type="hidden" name="idUser" id="idUser">
+            <form method="post" action="adminUsers.php?action=updateUsers" enctype="multipart/form-data">
+            <!-- ID de l'utilisateur (caché) -->
+                    <input type="hidden" name="id_users" id="id_users">
 
                     <div class="mb-3">
                         <label for="editNom" class="form-label">Nom</label>
-                        <input type="text" class="form-control" id="editNom" name="nom" required>
+                        <input type="text" class="form-control" id="editNom" name="editNom" required>
                     </div>
 
                     <div class="mb-3">
                         <label for="editPrenom" class="form-label">Prénom</label>
-                        <input type="text" class="form-control" id="editPrenom" name="prenom" required>
+                        <input type="text" class="form-control" id="editPrenom" name="editPrenom" required>
                     </div>
 
                     <div class="mb-3">
                         <label for="editEmail" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="editEmail" name="email" required>
+                        <input type="email" class="form-control" id="editEmail" name="editEmail" required>
                     </div>
 
                     <div class="mb-3">
                         <label for="editDroits" class="form-label">Droits</label>
-                        <select class="form-select" id="editDroits" name="droits" required>
+                        <select class="form-select" id="editDroits" name="editDroits" required>
                             <option value="1">Admin</option>
                             <option value="2">User</option>
                         </select>

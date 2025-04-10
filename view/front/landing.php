@@ -14,6 +14,7 @@ $user = $_SESSION['user'];
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Petit Resto</title>
+    <link rel="icon" type="image/x-icon" href="../../public/img/favicon.ico" />
     <link rel="stylesheet" href="../../public/css/default.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
@@ -29,9 +30,12 @@ $user = $_SESSION['user'];
 <section id="Prestations">
 <?php require_once  '../front/prestations.php'; ?>
 </section>
+<section id="Contact">
+
+</section>
 <?php require_once  '../template/footer.php'; ?>
+
 <script type="text/javascript" src="../../public/js/main.js"></script>
 <!-- Bootstrap Bundle JS (inclut Popper.js) -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

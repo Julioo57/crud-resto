@@ -1,9 +1,182 @@
-.custom-h2{
-margin-left: 35% !important;;
+/* Wrapper des formulaires */
+.bg-custom {
+    background-image: url('../../public/img/pizza_login.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: fixed;
+    filter: blur(3px); /* Flou de l'image de fond */
+    width: 100%;
+    height: 100%;
+    z-index: 1; /* Assure-toi que l'image est derrière le formulaire */
+  }
+  
+  .login-wrapper {
+    background-color: rgba(255, 248, 240, 0.9); /* Fond clair avec transparence */
+    border-radius: 1.5rem;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.15); /* Ombre douce */
+    max-width: 450px;
+    width: 100%;
+    z-index: 10; /* Plus élevé que le fond pour que le formulaire soit au-dessus */
+    padding: 2rem;
+  }
+  
+  h3 {
+    font-family: 'Playfair Display', serif;
+  }
+  
+  .brand-logo {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border: 3px solid #a52a2a; /* Bordure pour l'image du logo */
+  }
+  
+  /* Style de l'input-group avec les icônes */
+  .input-group {
+    width: 100%;
+  }
+  
+  .input-group-text {
+    background-color: #a52a2a; /* Couleur de fond de l'icône */
+    color: white; /* Couleur du texte des icônes */
+    border-right: none; /* Supprimer la bordure droite pour une meilleure transition */
+  }
+  
+  .form-control {
+    border-left: none; /* Supprimer la bordure gauche pour un alignement parfait */
+    border-radius: 0.375rem; /* Bord arrondi pour que tout s'aligne bien */
+  }
+  
+  /* Focus des champs de texte */
+  .form-control:focus {
+    border-color: #a52a2a; /* Bordure rouge lors du focus */
+    box-shadow: 0 0 0 0.2rem rgba(165, 42, 42, 0.25); /* Ombre douce au focus */
+  }
+  
+  /* Bouton personnalisé */
+  .btn-custom-login {
+    display: inline-block;
+    font-weight: 600;
+    color: #fff;
+    background-color: #8b1a1a;
+    border: 1px solid #8b1a1a;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: 0.375rem;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+  }
+  
+  .btn-custom-login:hover {
+    background-color: #fff;
+    color:#8b1a1a; /* Couleur du texte au survol */
+  }  
+  /* Lien personnalisé */
+  .link-custom {
+    color: #a52a2a;
+    text-decoration: underline;
+  }
+  
+  .link-custom:hover {
+    color: #701010;
+  }
+  
+  /* Responsivité - Adaptation pour les petits écrans */
+  @media (max-width: 767.98px) {
+    .login-wrapper {
+      padding: 1.5rem; /* Moins de padding sur les petits écrans */
+    }
+  }
+  /* animation for register */ 
+  @keyframes fadeSlide {
+    0% {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .register-wrapper {
+    animation: fadeSlide 0.8s ease-out;
+  }
+  .login-wrapper{
+    animation: fadeSlide 0.8s ease-out;
+  }
+ /* === Accueil Page CSS === */
+
+/* Section Hero */
+.bg_img{
+  background-image: url('../img/pizza_login.png'); /* Remplace par le chemin de ton image */
+  background-size: cover;
+  background-position: center;
 }
-.custom-btnGroup{
-margin-top:0;
+
+
+.hero::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* Assombrit l'image pour contraste */
+  z-index: 0;
 }
-.custom_width{
-width:10%;
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 800px;
+  padding: 20px;
+}
+
+.hero-content h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.hero-content p {
+  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Boutons CTA */
+.btn-cta {
+  display: inline-block;
+  background-color: #a52a2a;
+  color: white;
+  padding: 0.75rem 2rem;
+  border: none;
+  border-radius: 50px;
+  font-size: 1.1rem;
+  margin: 0.5rem;
+  transition: background 0.3s ease;
+  text-decoration: none;
+}
+
+.btn-cta:hover {
+  background-color: #701010;
+  color: #fff;
+}
+/* Responsive Typo Hero */
+@media (max-width: 768px) {
+  .hero-content h1 {
+    font-size: 2.2rem;
+  }
+
+  .hero-content p {
+    font-size: 1rem;
+  }
+
+  .btn-cta {
+    font-size: 1rem;
+    padding: 0.6rem 1.5rem;
+  }
 }

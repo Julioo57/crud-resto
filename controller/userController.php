@@ -58,88 +58,112 @@ class UserController {
 
     // Fonction d'inscription
     public function register() {
+        // Initialisation d'un tableau pour stocker les messages d'erreur
+        $errors = [];
+    
         // Vérification si la requête est bien en méthode POST
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
             // Vérification des champs nécessaires
-            if (!empty($_POST['name']) && !empty($_POST['prenom']) && !empty($_POST['mail']) && !empty($_POST['password'])) {
-                
-                // Récupération des données du formulaire
-                $nom = trim($_POST['name']);
-                $prenom = trim($_POST['prenom']);
-                $email = trim($_POST['mail']);
-                $password = password_hash(trim($_POST['password']), PASSWORD_BCRYPT); // Hash du mot de passe
-                $droits = isset($_POST['droits']) ? $_POST['droits'] : '2'; // Par défaut "Utilisateur" (droits = 2)
+            if (empty($_POST['name']) || empty($_POST['prenom']) || empty($_POST['mail']) || empty($_POST['password'])) {
+                $errors[] = "Tous les champs obligatoires doivent être remplis.";
+            }
     
-                // Gestion de l'avatar (fichier image)
-                $avatar = null;
-                if (isset($_FILES['avatar']) && $_FILES['avatar']['error'] === 0) {
-                    $avatarTmpName = $_FILES['avatar']['tmp_name'];
-                    $avatarName = basename($_FILES['avatar']['name']);
-                    $avatarExtension = strtolower(pathinfo($avatarName, PATHINFO_EXTENSION));
+            // Récupération des données du formulaire
+            $nom = trim($_POST['name']);
+            $prenom = trim($_POST['prenom']);
+            $email = trim($_POST['mail']);
+            $password = password_hash(trim($_POST['password']), PASSWORD_BCRYPT); // Hash du mot de passe
+            $droits = isset($_POST['droits']) ? $_POST['droits'] : '2'; // Par défaut "Utilisateur" (droits = 2)
     
-                    // Vérification de l'extension du fichier image
-                    $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
-                    if (in_array($avatarExtension, $allowedExtensions)) {
-                        if (!is_dir('uploads/avatars')) {
-                            mkdir('uploads/avatars', 0777, true); // Créer le dossier s'il n'existe pas
-                        }
+            // Gestion de l'avatar (fichier image)
+            $avatar = null;
+            if (isset($_FILES['avatar']) && $_FILES['avatar']['error'] === 0) {
+                $avatarTmpName = $_FILES['avatar']['tmp_name'];
+                $avatarName = basename($_FILES['avatar']['name']);
+                $avatarExtension = strtolower(pathinfo($avatarName, PATHINFO_EXTENSION));
     
-                        // Définir le nom unique pour l'avatar
-                        $avatar = 'avatars/' . uniqid() . '.' . $avatarExtension;
-                        // Déplacer l'avatar vers le dossier de destination
-                        move_uploaded_file($avatarTmpName, 'uploads/' . $avatar);
-                    } else {
-                        echo "Seules les images de type jpg, jpeg, png ou gif sont autorisées.";
-                        return;
+                // Définir un tableau des extensions autorisées
+                $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
+    
+                // Vérifier si l'extension du fichier est autorisée
+                if (!in_array($avatarExtension, $allowedExtensions)) {
+                    $errors[] = "Seules les extensions jpg, jpeg, png et gif sont autorisées pour l'avatar.";
+                }
+    
+                // Vérification de la taille du fichier (par exemple, 2 Mo max)
+                $maxFileSize = 2 * 1024 * 1024; // 2 Mo
+                if ($_FILES['avatar']['size'] > $maxFileSize) {
+                    $errors[] = "L'avatar est trop grand, la taille maximale autorisée est de 2 Mo.";
+                }
+    
+                // Vérification si le dossier 'uploads/avatars' existe et a les bonnes permissions
+                if (!is_dir('uploads/avatars')) {
+                    if (!mkdir('uploads/avatars', 0777, true)) {
+                        $errors[] = "Impossible de créer le dossier pour les avatars.";
                     }
                 }
     
-                try {
-                    // Connexion à la base de données
-                    $pdo = Database::getConnection();
+                // Créer un nom unique pour l'avatar et définir son chemin
+                $avatar = 'avatars/' . uniqid() . '.' . $avatarExtension;
+                $uploadPath = 'uploads/' . $avatar;
     
-                    // Vérifier si l'email existe déjà dans la base de données
-                    $checkSql = "SELECT id_users FROM users WHERE mail = :email";
-                    $checkStmt = $pdo->prepare($checkSql);
-                    $checkStmt->bindParam(':email', $email, PDO::PARAM_STR);
-                    $checkStmt->execute();
-    
-                    if ($checkStmt->fetch()) {
-                        echo "Cet email est déjà utilisé.";
-                        return;
-                    }
-    
-                    // Insertion de l'utilisateur dans la base de données
-                    $sql = "INSERT INTO users (nom, prenom, mail, password, droits, avatar) 
-                            VALUES (:nom, :prenom, :email, :password, :droits, :avatar)";
-                    $stmt = $pdo->prepare($sql);
-                    $stmt->bindParam(':nom', $nom, PDO::PARAM_STR);
-                    $stmt->bindParam(':prenom', $prenom, PDO::PARAM_STR);
-                    $stmt->bindParam(':email', $email, PDO::PARAM_STR);
-                    $stmt->bindParam(':password', $password, PDO::PARAM_STR);
-                    $stmt->bindParam(':droits', $droits, PDO::PARAM_STR);
-                    $stmt->bindParam(':avatar', $avatar, PDO::PARAM_STR);
-    
-                    // Si l'insertion est réussie
-                    if ($stmt->execute()) {
-                        header("Location:view/front/login.php");
-                        exit(); // S'assurer de terminer l'exécution après la redirection
-                    } else {
-                        echo "Erreur lors de l'inscription. Veuillez réessayer.";
-                    }
-                } catch (PDOException $e) {
-                    echo "Erreur lors de l'inscription : " . $e->getMessage();
+                // Déplacer l'avatar dans le dossier approprié
+                if (!move_uploaded_file($avatarTmpName, $uploadPath)) {
+                    $errors[] = "Erreur lors du déplacement de l'avatar.";
                 }
             }
+    
+            // Si des erreurs existent déjà, on arrête le traitement
+            if (count($errors) > 0) {
+                return $errors; // Retourne les erreurs pour qu'elles puissent être affichées dans le formulaire
+            }
+    
+            // Connexion à la base de données
+            try {
+                $pdo = Database::getConnection();
+    
+                // Vérifier si l'email existe déjà dans la base de données
+                $checkSql = "SELECT id_users FROM users WHERE mail = :email";
+                $checkStmt = $pdo->prepare($checkSql);
+                $checkStmt->bindParam(':email', $email, PDO::PARAM_STR);
+                $checkStmt->execute();
+    
+                if ($checkStmt->fetch()) {
+                    $errors[] = "Cet email est déjà utilisé.";
+                    return $errors; // Retourner les erreurs, l'email est déjà pris
+                }
+    
+                // Préparer la requête d'insertion
+                $sql = "INSERT INTO users (nom, prenom, mail, password, droits, avatar) 
+                        VALUES (:nom, :prenom, :email, :password, :droits, :avatar)";
+                $stmt = $pdo->prepare($sql);
+                $stmt->bindParam(':nom', $nom, PDO::PARAM_STR);
+                $stmt->bindParam(':prenom', $prenom, PDO::PARAM_STR);
+                $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+                $stmt->bindParam(':password', $password, PDO::PARAM_STR);
+                $stmt->bindParam(':droits', $droits, PDO::PARAM_STR);
+                $stmt->bindParam(':avatar', $avatar, PDO::PARAM_STR);
+    
+                // Exécution de la requête
+                if ($stmt->execute()) {
+                    // Si l'insertion est réussie, ne redirigez pas immédiatement. Vous pouvez choisir de rediriger
+                    // ou de donner un retour positif dans la page pour que l'utilisateur soit informé de son succès
+                    return [];  // Retourner un tableau vide si l'inscription a réussi
+                } else {
+                    $errors[] = "Erreur lors de l'insertion de l'utilisateur.";
+                    return $errors;
+                }
+            } catch (PDOException $e) {
+                $errors[] = "Erreur lors de l'inscription : " . $e->getMessage();
+                return $errors;
+            }
         }
+    
+        return $errors; // Retourne les erreurs pour le cas où le formulaire n'est pas soumis ou en cas d'erreur
     }
     
     
-    
-    
-    
-
     // Fonction de déconnexion
     public function logout() {
         session_start();

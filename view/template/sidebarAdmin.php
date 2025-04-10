@@ -9,7 +9,7 @@ $user = $_SESSION['user'];
 ?>
 <div class="sideBar d-none flex-column flex-shrink-0 p-3 text-bg-dark vh-100 fixed position-absolute top-0 start-0" style="width: 280px; z-index:1000;">
     <div href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-      <img src="../../public/img/logo_resto.webp" class="bi pe-none me-2 rounded-circle" width="40" height="32"><use xlink:href="#bootstrap"></use></img>
+      <img src="../../public/img/logo_resto.png" class="bi pe-none me-2 rounded-circle" width="40" height="32">
       <span class="fs-4">DashBoard</span>
     </div>
     <hr>

@@ -5,8 +5,12 @@ class Database {
     private static $username = "root";
     private static $password = "";
     private static $pdo = null;
-// Connexion à la bdd
-
+// Connexion à la bdd    private static $host = "2p549h.myd.infomaniak.com";
+//    private static $dbname = "2p549h_restau";
+//    private static $username = "2p549h_admin";
+//   private static $password = "Jules57000@";
+//    private static $pdo = null;
+    
 
 //fonction pour se co la bdd 
     public static function getConnection() {

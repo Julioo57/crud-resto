@@ -333,65 +333,7 @@ public function deleteTarif($idPrestation, $idCategorie) {
         // Retourner la première ligne (il doit y en avoir une seule)
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
-      // affichange table droits 
-    // gerer tout ce qui est droit 
-    public function getDroits() {
-        // Connexion à la base de données
-        $pdo = Database::getConnection();
-        
-        // Préparation de la requête pour récupérer toutes les catégories
-        $query = "SELECT * FROM droits";
-        $stmt = $pdo->prepare($query);
-        
-        // Exécution de la requête
-        $stmt->execute();
-        
-        // Retourner les résultats sous forme de tableau associatif
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
-
-    public function addDroit($nomDroit) {
-        $pdo = Database::getConnection();
-        $sql = "INSERT INTO droits (libelle_droits) VALUES (:nomDroit)";
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute(['nomDroit' => $nomDroit]); // Utilisation correcte d'un tableau
-    }
-    
-    public function uptDroits($valeurInputDroits, $idDroits) {
-        $pdo = Database::getConnection();
-    
-        // Préparation de la requête pour mettre à jour une catégorie
-        $query = "UPDATE droits SET libelle_droits =? WHERE id_droits =?";
-    
-        try {
-            // Préparez la requête
-            $stmt = $pdo->prepare($query);
-    
-            // Liez les paramètres à la requête
-            $stmt->execute([$valeurInputDroits, $idDroits]);
-    
-            if ($stmt->rowCount() > 0) {
-                echo "La catégorie a été mise à jour avec succès.";
-            } else {
-                echo "Aucune modification effectuée. Peut-être que l'ID n'existe pas ou les données sont les mêmes.";
-            }
-        } catch (PDOException $e) {
-            echo "Erreur lors de la mise à jour : " . $e->getMessage();
-        }
-    }
-
-    public function deleteDroit($idDroit) {
-        // Connexion à la base de données
-        $pdo = Database::getConnection();
-        
-        // Préparation de la requête de suppression
-        $query = "DELETE FROM droits WHERE id_droits = ?";
-        $stmt = $pdo->prepare($query);
-        
-        // Exécution de la requête avec l'ID de la catégorie à supprimer
-        $stmt->execute([$idDroit]);
-    }
-     // Méthode pour récupérer une catégorie par son ID
+         // Méthode pour récupérer une catégorie par son ID
      public function getDroitById($idDroit) {
         $pdo = Database::getConnection();
         $query = "SELECT * FROM categorie WHERE id_droits = ?";

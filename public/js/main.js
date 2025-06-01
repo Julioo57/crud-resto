@@ -14,6 +14,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // btnPanel & sideBar 
     const btnPanel = document.querySelector(".btn-panel");
     const sideBar = document.querySelector(".sideBar");
+     const mainContent = document.querySelector('.main-admin');  // Sélectionne l'élément main-admin
 
     // Vérif que ca existe avant de faire debug 
     function toggleVisibility(element) {
@@ -52,14 +53,41 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    // Fonction pour afficher/masquer la sidebar
-    if (btnPanel && sideBar) {
-        btnPanel.addEventListener("click", function() {
+     // Fonction pour appliquer le padding
+    function updateMainContentPadding() {
+        const screenWidth = window.innerWidth;
+        const sideBarStyle = window.getComputedStyle(sideBar);
+
+        // Si l'écran est plus petit que 992px (taille mobile/tablette), on gère la sidebar avec le bouton
+        if (screenWidth < 992) {
+            // Vérifie si la sidebar est visible (d-flex) ou cachée (d-none)
+            if (sideBarStyle.display === 'flex') {
+                mainContent.classList.add('ps-5');  // Ajouter du padding si la sidebar est visible
+            } else {
+                mainContent.classList.remove('ps-5');  // Retirer le padding si la sidebar est cachée
+            }
+        } else {
+            // Pour les grands écrans (PC), la sidebar est toujours visible, donc on ajoute le padding
+            mainContent.classList.add('ps-5');
+        }
+    }
+
+    // Fonction pour afficher/masquer la sidebar sur mobile
+    if (btnPanel && sideBar && mainContent) {
+        btnPanel.addEventListener("click", function () {
             sideBar.classList.toggle("d-none");
             sideBar.classList.toggle("d-flex");
+
+            // Mettez à jour le padding en fonction de l'état de la sidebar après un petit délai
+            setTimeout(updateMainContentPadding, 50);
         });
     }
 
+    // Vérifiez et appliquez le padding dès le chargement de la page
+    updateMainContentPadding();
+
+    // Ajoutez un événement pour gérer le redimensionnement de la fenêtre
+    window.addEventListener("resize", updateMainContentPadding);
     // pour le popup catégorie
     const btnPopup = document.querySelector(".btnPopup");
     const popup = document.querySelector(".popupAdd");
